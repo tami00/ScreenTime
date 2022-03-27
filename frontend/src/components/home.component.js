@@ -25,7 +25,7 @@ const HomeComponent = () => {
     <>
       {firstMovie ?
         <HeroImage
-          image={`https://image.tmdb.org/t/p/original/${firstMovie?.poster_path}`}
+          img={`https://image.tmdb.org/t/p/original/${firstMovie.backdrop_path}`}
           title= {firstMovie.title}/> 
       : null
       }
