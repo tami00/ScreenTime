@@ -18,14 +18,14 @@ const HomeComponent = () => {
     
   },[])
 
-  const firstMovie = (movieInfo?.results[0]);
+  const firstMovie = (movieInfo?.results[1]);
   console.log(firstMovie)
 
   return (
     <>
       {firstMovie ?
         <HeroImage
-          img={`https://image.tmdb.org/t/p/original/${firstMovie.backdrop_path}`}
+          image={`https://image.tmdb.org/t/p/original/${firstMovie.backdrop_path}`}
           title= {firstMovie.title}/> 
       : null
       }
