@@ -1,20 +1,10 @@
 import React, {useState, useEffect } from "react";
-import styled from "styled-components";
 //services
 import UserService from "../services/user.service";
-import {displayMovies} from "../services/movie-details.service";
+import {displayMovies} from "../services/movieAPI.service";
 
 //components
 import HeroImage from "./heroImage";
-
-const Container = styled.div`
-  z-index: 1;
-  display: flex;
-  flex-direction: row;
-  padding: 20px 30px;
-  justify-content: center;
-  border-bottom: 1px solid lightgray;
-`;
 
 const HomeComponent = () => {
   const [movieInfo, setMovieInfo] = useState();
