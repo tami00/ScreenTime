@@ -10,5 +10,15 @@ async function getDetails(id)
   }
 }
 
+async function displayMovies()
+{
+  try {
+    const response = await API.get(`/movie/popular?api_key=${API_KEY}&language=en-US`)
+    return response?.data
+  } catch (error) {
+    console.log(error)
+  }
+}
 
-export {getDetails}
+
+export {getDetails, displayMovies}
