@@ -102,7 +102,7 @@ const App = () => {
         )}
       </nav>
 
-      <div className="container mt-3">
+      <div className="container-fluid">
         <Switch>
           <Route exact path={["/", "/home"]} component={Home} />
           <Route exact path="/login" component={Login} />

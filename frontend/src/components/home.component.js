@@ -1,24 +1,37 @@
 import React, {useState, useEffect } from "react";
 //services
-import UserService from "../services/user.service";
-import {displayMovies} from "../services/movieAPI.service";
+import {getPopularMovies, getUpcoming} from "../services/movieAPI.service";
 
+//styles
+import Carousel from "react-elastic-carousel"
 //components
 import HeroImage from "./heroImage";
+import Rows from "./rows";
+import Poster from "./poster";
 
 const HomeComponent = () => {
-  const [movieInfo, setMovieInfo] = useState();
+  const [popularMovieInfo, setPopularMovieInfo] = useState();
+  const [upMovieInfo, setUpMovieInfo] = useState();
 
   useEffect( ()=>{
    
     (async ()=>{
-      const response = await displayMovies()
-      setMovieInfo(response)
+      const response = await getPopularMovies()
+      setPopularMovieInfo(response)
     })();
     
   },[])
 
-  const firstMovie = (movieInfo?.results[1]);
+  useEffect( ()=>{
+   
+    (async ()=>{
+      const response = await getUpcoming()
+      setUpMovieInfo(response)
+    })();
+    
+  },[])
+
+  const firstMovie = (popularMovieInfo?.results[0]);
   console.log(firstMovie)
 
   return (
@@ -29,6 +42,32 @@ const HomeComponent = () => {
           title= {firstMovie.title}/> 
       : null
       }
+
+      <Rows header = 'Popular'>
+        {popularMovieInfo?.results.map(popularMovieInfo => (
+          <Poster
+            key={popularMovieInfo.id}
+            image={popularMovieInfo.poster_path
+              ? `https://image.tmdb.org/t/p/w1280/${popularMovieInfo.poster_path}`
+              : 'No image'
+            }
+            movieId={popularMovieInfo.id}
+            />
+        ))}
+      </Rows>
+
+      <Rows header = 'Upcoming'>
+        {upMovieInfo?.results.map(upMovieInfo => (
+          <Poster
+            key={upMovieInfo.id}
+            image={upMovieInfo.poster_path
+              ? `https://image.tmdb.org/t/p/w1280/${upMovieInfo.poster_path}`
+              : 'No image'
+            }
+            movieId={upMovieInfo.id}
+            />
+        ))}
+      </Rows>
       </>
   );
 };

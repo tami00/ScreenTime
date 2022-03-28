@@ -1,13 +1,5 @@
 import styled from "styled-components";
 
-// export const Wrapper = styled.div`
-//     url(${({image}) => image})
-//     background-size: 100%, cover;
-//     height: 600px;
-//     width: 300px
-//     position: relative;
-// `;
-
 export const Wrapper = styled.div`
   background: linear-gradient(
       to bottom,
@@ -16,11 +8,23 @@ export const Wrapper = styled.div`
     ),
     url(${({ image }) => image});
   background-size: 100%, cover;
-  width: 1000px;
-  height: 400px;
+  background-position: center;
+  height: 600px;
+  position: relative;
 `;
 
-export const Content = styled.div``;
+export const Content = styled.div`
+    padding: 20px;
+    margin: 0 auto
+`;
 
 
-export const Text = styled.div``;
+export const Text = styled.div`
+    z-index: 100;
+    max-width: 700px;
+    position: absolute;
+    bottom: 40px;
+    margin-right: 20px;
+    min-height:100px;
+    color: var(--white);
+`;

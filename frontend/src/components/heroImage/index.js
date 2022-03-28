@@ -6,7 +6,8 @@ const HeroImage = ({title,image}) => (
     <Wrapper image={image}>
         <Content>
             <Text>
-                <h1>{title}</h1>
+                <h2>TAG LINE...</h2>
+                <h3>{title}</h3>
             </Text>
         </Content>
     </Wrapper>

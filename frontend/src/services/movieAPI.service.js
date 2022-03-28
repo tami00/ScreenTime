@@ -36,7 +36,7 @@ import {API,API_KEY} from "../utils/API";
   }
 }
 
-async function displayMovies()
+async function getPopularMovies()
 {
   try {
     const response = await API.get(`/movie/popular?api_key=${API_KEY}&language=en-US`)
@@ -45,6 +45,16 @@ async function displayMovies()
     console.log(error)
   }
 }
+
+async function getUpcoming()
+{
+  try {
+    const response = await API.get(`/movie/upcoming?api_key=${API_KEY}&language=en-US`)
+    return response?.data
+  } catch (error) {
+    console.log(error)
+  }
+}
  
  
- export {searchMovie, trailer, getDetails, displayMovies} 
+ export {searchMovie, trailer, getDetails, getPopularMovies, getUpcoming} 
