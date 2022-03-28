@@ -116,7 +116,7 @@ const MovieInfoComponent = () => {
           </div>
           <div>
           <Container2>
-            <Reviews movieInfo = {movieInfo}/>
+            <Reviews/>
           </Container2>
           </div>
       </Container>

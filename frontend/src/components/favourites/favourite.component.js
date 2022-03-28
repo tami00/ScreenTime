@@ -13,6 +13,7 @@ function FavouriteComp(props) {
     const [favourited, setFavourited] =  useState(false);
 
     const variable = {
+        //change userFrom
         userFrom: props.userFrom,
         movieId: props.movieInfo?.id,
         movieTitle: props.movieInfo?.title,
