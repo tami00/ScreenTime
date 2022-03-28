@@ -1,7 +1,7 @@
 const express =  require('express');
 const router = express.Router();
 const { authJwt } = require("../middlewares");
-const {Favourite} = require("../models/favourite.model")
+const Favourite = require("../models/favourite.model");
 
     router.use(function(req, res, next) {
       res.header(
