@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import MovieItem from "./movie-item.component"
-import {searchMovie} from '../../services/search.service'
+import MovieItem from './movie-item.component'
+import {searchMovie} from '../../services/movieAPI.service'
 import { useHistory } from "react-router-dom";// services
 
 const MovieListContainer = styled.div`
