@@ -1,8 +1,9 @@
 const express =  require('express');
 const router = express.Router();
-const {authJwt} = require("../middlewares");
+const { authJwt } = require("../middlewares");
+const Favourite = require("../models/favourite.model")
 
-router.use(function(req, res, next) {
+    router.use(function(req, res, next) {
       res.header(
         "Access-Control-Allow-Headers",
         "x-access-token, Origin, Content-Type, Accept"
@@ -53,5 +54,4 @@ router.post("/removeFavorite", [authJwt.verifyToken], (req, res) => {
             return res.status(200).json({success: true, doc})
         })
 })
-
-module.exports = router ;
+module.exports = router;

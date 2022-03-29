@@ -11,6 +11,7 @@ import FavouriteComp from "../favourites/favourite.component";
 const MovieInfoComponent = () => {
     const link = "https://www.youtube.com/embed/{4UZrsTqkcW4}"
     const[trailerDetails, setTrailerDetails] = useState();
+    const [reviewList, setReviewList] = useState();
     const [movieInfo, setMovieInfo] = useState();
     const [modal, setModal] = useState(false);
     const [videoLoading, setVideoLoading] = useState(true);
@@ -45,6 +46,10 @@ const MovieInfoComponent = () => {
     const spinner = () => {
       setVideoLoading(!videoLoading);
     };
+
+    const updateReview = (newReview) => {
+      setReviewList(reviewList.concat(newReview))
+    }
 
 
   // }
@@ -116,7 +121,7 @@ const MovieInfoComponent = () => {
           </div>
           <div>
           <Container2>
-            <Reviews/>
+            <Reviews refreshFunction={updateReview} reviewList={reviewList}/>
           </Container2>
           </div>
       </Container>

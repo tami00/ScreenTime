@@ -1,6 +1,7 @@
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import styled from "styled-components";
+import authService from '../../services/auth.service';
 
 const FavouriteButton = styled.button`
   height: 30px;
@@ -9,12 +10,14 @@ const FavouriteButton = styled.button`
 
 function FavouriteComp(props) {
 
+    const currentUser = authService.getCurrentUser();
+
     const [favouriteNumber, setFavouriteNumber] = useState(0);
     const [favourited, setFavourited] =  useState(false);
 
     const variable = {
         //change userFrom
-        userFrom: props.userFrom,
+        userFrom: currentUser.id,
         movieId: props.movieInfo?.id,
         movieTitle: props.movieInfo?.title,
         movieImg: props.movieInfo?.poster_path
