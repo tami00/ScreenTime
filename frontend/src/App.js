@@ -1,39 +1,22 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import { Link, Route, Switch } from "react-router-dom";
-import styled from "styled-components";
 import { useLocation } from 'react-router-dom';
 // components
 import Search from './components/search/Search'
 import "./App.css";
 // import AuthVerify from "./common/auth-verify";
 import EventBus from "./common/EventBus";
-import BoardAdmin from "./components/board-admin.component";
-import BoardCreator from "./components/board-creator.component";
 import BoardUser from "./components/board-user.component";
 import Home from "./components/home.component";
 import Login from "./components/login.component";
-import MovieListComponent from "./components/films/movie-list.component";
+import MovieListComponent from "./components/movieDetail/movie-list.component";
 import Profile from "./components/profile.component";
 import Register from "./components/register.component";
 import AuthService from "./services/auth.service";
-import MovieInfoComponent from "./components/films/movie-info.component";
-import MovieItem from "./components/films/movie-item.component";
-import MovieDetailContainer from "./components/films/movie-detail-container.component"
-
-
-const MovieListContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  padding: 30px;
-  gap: 25px;
-  justify-content: space-evenly; ;
-`;
+import MovieInfoComponent from "./components/movieDetail/movie-info.component";
 
 const App = () => {
-  const [showCreatorBoard, setShowCreatorBoard] = useState(false);
-  const [showAdminBoard, setShowAdminBoard] = useState(false);
   const [currentUser, setCurrentUser] = useState(undefined);
   const [locationState, setLocationState] = useState('')
 
@@ -45,8 +28,6 @@ const App = () => {
     setLocationState(location.pathname)
     if (user) {
       setCurrentUser(user);
-      setShowAdminBoard(user.roles.includes("ROLE_MODERATOR"));
-      setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
     }
 
     EventBus.on("logout", () => {
@@ -59,8 +40,6 @@ const App = () => {
   }, []);
   const logOut = () => {
     AuthService.logout();
-    setShowCreatorBoard(false);
-    setShowAdminBoard(false);
     setCurrentUser(undefined);
   };
 
@@ -77,22 +56,7 @@ const App = () => {
             </Link>
           </li>
 
-          {showCreatorBoard && (
-            <li className="nav-item">
-              <Link to={"/mod"} className="nav-link">
-                Moderator Board
-              </Link>
-            </li>
-          )}
-
-          {showAdminBoard && (
-            <li className="nav-item">
-              <Link to={"/admin"} className="nav-link">
-                Admin Board
-              </Link>
-            </li>
-          )}
-
+            {/* might replace for creator stuff -- discover/start campaign */}
           {currentUser && (
             <li className="nav-item">
               <Link to={"/user"} className="nav-link">
@@ -138,7 +102,7 @@ const App = () => {
         )}
       </nav>
 
-      <div className="container mt-3">
+      <div className="container-fluid">
         <Switch>
           <Route exact path={["/", "/home"]} component={Home} />
           <Route exact path="/login" component={Login} />
@@ -147,8 +111,6 @@ const App = () => {
           <Route exact path="/films/:title/:id" children={<MovieInfoComponent/>}/>
           <Route exact path="/films/:title" children={<MovieListComponent/>}/>
           <Route path="/user" component={BoardUser} />
-          <Route path="/creator" component={BoardCreator} />
-          <Route path="/admin" component={BoardAdmin} />
         </Switch>
       </div>
       {/* {selectedMovie && <MovieInfoComponent selectedMovie={selectedMovie} />} */}
