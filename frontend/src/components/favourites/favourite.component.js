@@ -2,6 +2,7 @@ import Axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import styled from "styled-components";
 import authService from '../../services/auth.service';
+import authHeader from '../../services/auth-header';
 
 const FavouriteButton = styled.button`
   height: 30px;
@@ -58,7 +59,7 @@ function FavouriteComp(props) {
                 })
 
         }else {
-            Axios.post('http://localhost:8080/api/favourite/addToFavourite', variable)
+            Axios.post('http://localhost:8080/api/favourite/addToFavourite', variable, { headers: authHeader() })
                 .then(response =>{
                     if(response.data.success){
                         setFavouriteNumber(favouriteNumber + 1)
