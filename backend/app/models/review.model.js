@@ -8,7 +8,7 @@ const Review = mongoose.model(
     author: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Role"
+        ref: "User"
       }
     ],
     reponseTo: [

@@ -24,7 +24,7 @@ const Reviews = (props) => {
             reviewId: props.reviewId,
         }
 
-        Axios.post('api/review/addReview', variables)
+        Axios.post('http://localhost:8080/api/review/addReview', variables)
         .then(response=> {
             if(response.data.success) {
                 setReview("")

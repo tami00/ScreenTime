@@ -12,7 +12,7 @@ router.use(function(req, res, next) {
 });
 
 
-router.post("/saveReview", [authJwt.verifyToken], (req, res) => {
+router.post("/addReview", [authJwt.verifyToken], (req, res) => {
     const review = new Review(req.body)
 
     review.save((err, review) => {
