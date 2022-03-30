@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const Review = mongoose.model(
   "Review",
   new mongoose.Schema({
+    movieId: String,
     reviewId: String,
     content: String,
     author: [
