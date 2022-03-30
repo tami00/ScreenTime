@@ -2,6 +2,8 @@ import React, {useState, useRef} from 'react';
 import Axios from 'axios';
 import {Button, Input} from 'antd';
 import authService from '../../services/auth.service'
+import authHeader from '../../services/auth-header';
+import FirstReview from './FirstReview';
 
 const {TextArea} = Input;
 
@@ -19,12 +21,13 @@ const Reviews = (props) => {
         e.preventDefault();
 
         const variables = {
+            movieId: props.movieId,
             content: review,
             author: currentUser.id,
             reviewId: props.reviewId,
         }
 
-        Axios.post('http://localhost:8080/api/review/addReview', variables)
+        Axios.post('http://localhost:8080/api/review/addReview', variables,{ headers: authHeader()})
         .then(response=> {
             if(response.data.success) {
                 setReview("")
@@ -38,8 +41,15 @@ const Reviews = (props) => {
     return (
         <div>
                 <p>Reviews</p>
-                <hr></hr>
+                
                 {console.log(props.reviewList)}
+
+                {props.reviewList && props.reviewList.map((review, index) => (
+                    (!review.responseTo &&
+                    <React.Fragment key={review._id}>
+                        <FirstReview review={review} movieIId={props.movieId} refreshFunction={props.refreshFunctions}/>
+                    </React.Fragment>
+                )))}
                 <form style={{display: 'flex'}} onSubmit>
                     <TextArea
                         style={{width: '100%', borderRadius: '5px'}}
