@@ -7,6 +7,7 @@ import { trailer } from "../../services/movieAPI.service";
 import { BiLoaderAlt } from "react-icons/bi";
 import {IoCloseOutline} from "react-icons/io5";
 import FavouriteComp from "../favourites/favourite.component";
+import Axios from 'axios';
 
 const MovieInfoComponent = () => {
     const link = "https://www.youtube.com/embed/{4UZrsTqkcW4}"
@@ -50,6 +51,18 @@ const MovieInfoComponent = () => {
     const updateReview = (newReview) => {
       setReviewList(reviewList.concat(newReview))
     }
+
+    useEffect(() => {
+      Axios.post('/api/review/getReviews', id)
+            .then(response => {
+                if (response.data.success) {
+                    console.log('response.data.reviews',response.data.reviews)
+                    setReviewList(response.data.reviews)
+                } else {
+                    alert('Error')
+                }
+            })
+    }, [])
 
 
   // }

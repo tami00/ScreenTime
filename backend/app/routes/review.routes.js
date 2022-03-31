@@ -28,4 +28,14 @@ router.post("/addReview", [authJwt.verifyToken], (req, res) => {
     
 })
 
+router.post("/getReviews", [authJwt.verifyToken], (req, res) => {
+    Review.find({"movieId": req.body.movieId})
+    .populate('author')
+    .exec((err, reviews) => {
+        if(err) return res.status(400).send(err)
+        res.status(200).json({success: true, reviews})
+    })
+    
+})
+
 module.exports = router ;
