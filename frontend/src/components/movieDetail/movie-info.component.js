@@ -7,6 +7,7 @@ import { trailer } from "../../services/movieAPI.service";
 import { BiLoaderAlt } from "react-icons/bi";
 import {IoCloseOutline} from "react-icons/io5";
 import FavouriteComp from "../favourites/favourite.component";
+import authHeader from '../../services/auth-header';
 import Axios from 'axios';
 
 const MovieInfoComponent = () => {
@@ -53,11 +54,11 @@ const MovieInfoComponent = () => {
     }
 
     useEffect(() => {
-      Axios.post('/api/review/getReviews', id)
+      Axios.post('http://localhost:8080/api/review/getReviews', id, { headers: authHeader()})
             .then(response => {
                 if (response.data.success) {
                     console.log('response.data.reviews',response.data.reviews)
-                    setReviewList(response.data.reviews)
+                    // setReviewList(response.data.reviews)
                 } else {
                     alert('Error')
                 }

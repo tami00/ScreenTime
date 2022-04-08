@@ -41,13 +41,10 @@ const Reviews = (props) => {
     return (
         <div>
                 <p>Reviews</p>
-                
-                {console.log(props.reviewList)}
-
                 {props.reviewList && props.reviewList.map((review, index) => (
                     (!review.responseTo &&
                     <React.Fragment key={review._id}>
-                        <FirstReview review={review} movieIId={props.movieId} refreshFunction={props.refreshFunctions}/>
+                        <FirstReview review={review} movieId={props.movieId} refreshFunction={props.refreshFunctions}/>
                     </React.Fragment>
                 )))}
                 <form style={{display: 'flex'}} onSubmit>
