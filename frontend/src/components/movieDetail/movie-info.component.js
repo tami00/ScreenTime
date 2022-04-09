@@ -57,7 +57,7 @@ const MovieInfoComponent = () => {
       Axios.post('http://localhost:8080/api/review/getReviews', id, { headers: authHeader()})
             .then(response => {
                 if (response.data.success) {
-                    console.log('response.data.reviews',response.data.reviews)
+                    console.log(id,'response.data.reviews',response.data.reviews)
                     // setReviewList(response.data.reviews)
                 } else {
                     alert('Error')

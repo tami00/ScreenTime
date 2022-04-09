@@ -36,6 +36,7 @@ db.mongoose
 // simple route
 app.use('/api/favourite', require('./app/routes/favourite.routes'));
 app.use('/api/review', require('./app/routes/review.routes'));
+app.use('/api/sentiment', require('./app/routes/sentiment-analysis.routes'));
 // routes
 // require(".app/routes/favourite.routes")(app);
 require("./app/routes/auth.routes")(app);

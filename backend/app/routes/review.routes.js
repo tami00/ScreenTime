@@ -29,7 +29,8 @@ router.post("/addReview", [authJwt.verifyToken], (req, res) => {
 })
 
 router.post("/getReviews", [authJwt.verifyToken], (req, res) => {
-    Review.find({"movieId": req.body.id})
+    Review.find({"movieId": req.body.id}) 
+    console.log(req.body.id)
     .populate('author')
     .exec((err, reviews) => {
         if(err) return res.status(400).send(err)
