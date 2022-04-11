@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import AuthService from "../services/auth.service";
 import { Menu, Container } from 'semantic-ui-react';
-import sentiment from "./sentiment-analysis/sentiment";
+import SentimentComponent from "./sentiment-analysis/sentiment.component";
 
 export default class Profile extends Component {
   constructor(props) {
@@ -85,9 +85,8 @@ export default class Profile extends Component {
             onClick={this.handleItemClick}
           />
         </Menu>
-        <Container>
-          
-        </Container>
+        {activeItem === 'reviews' ? <SentimentComponent/>
+        : "You haven't created an reviews yet"}
       </div>
     );
   }

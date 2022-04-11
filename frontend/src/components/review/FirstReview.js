@@ -5,7 +5,6 @@ const action = [
   <span onClick key="comment-basic-reply-to">reply</span>
 ]
 
-
 function FirstReview(props) {
   // console.log();
 
@@ -36,19 +35,7 @@ function FirstReview(props) {
                 </form>
       {/* <Button content='Add Reply' labelPosition='left' icon='edit' primary /> */}
       </Comment.Group>
-      )
-      
-
-        // {/* <form style={{display: 'flex'}} onSubmit>
-        //             <TextArea
-        //                 style={{width: '100%', borderRadius: '5px'}}
-        //                 placeholder = "leave a review"
-        //                 value={Comment}
-        //                 onChange
-        //                 />
-        //         </form> */}
-                
-   
+      ) 
   
 }
 

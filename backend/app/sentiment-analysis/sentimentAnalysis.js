@@ -1,8 +1,3 @@
-// import aposToLexForm from "apos-to-lex-form";
-// import {WordTokenizer} from 'natural';
-// import SpellCorrector from "spelling-corrector";
-// import stopword from "stopword";
-
 const aposToLexForm = require("apos-to-lex-form");
 const {WordTokenizer, SentimentAnalyzer, PorterStemmer} =  require("natural");
 const SpellCorrector = require("spelling-corrector");

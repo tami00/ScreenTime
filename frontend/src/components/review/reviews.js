@@ -4,14 +4,15 @@ import {Button, Input} from 'antd';
 import authService from '../../services/auth.service'
 import authHeader from '../../services/auth-header';
 import FirstReview from './FirstReview';
+import { useEffect } from 'react';
 
 const {TextArea} = Input;
 
 const Reviews = (props) => {
 
     const currentUser = authService.getCurrentUser();
-
     const [review, setReview] = useState('');
+    const [sentiment, setSentiment] = useState(0);
 
     const handleChange = (e) => {
         setReview(e.target.value)
@@ -32,12 +33,35 @@ const Reviews = (props) => {
             if(response.data.success) {
                 setReview("")
                 props.refreshFunction(response.data.result)
+                console.log(JSON.stringify(review))
             } else {
                 alert('Failed to save review')
             }
         })
-    }
 
+    }
+    
+    // useEffect(() => {
+    //     async function fetchSentiment(review) {
+    //     const result = Axios.post('http://localhost:8080/api/sentiment/analysis', JSON.stringify(review), {headers: authHeader(), "Content-Type": "application/json"})
+    //           .then(response => {
+    //               if (response.data.success) {
+    //                   console.log('HERE',response.data)
+    //                   setSentiment(result.sentiment)
+    //               } else {
+    //                   alert('Error')
+    //               }
+    //           })
+    //           .catch((error) => {
+    //               console.log(error.response)
+    //           })
+    //     }
+    //     fetchSentiment(review)
+    //   }, [review])
+  
+
+
+      
     return (
         <div>
                 <p>Reviews</p>
