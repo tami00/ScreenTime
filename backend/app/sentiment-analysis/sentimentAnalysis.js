@@ -10,6 +10,7 @@ spellCorrector.loadDictionary();
 const analyzer = new SentimentAnalyzer('English', PorterStemmer, 'afinn')
 
 function getSentiment(text){
+    console.log(typeof text)
     if(!text.trim()) {
         return 0;
     }
@@ -21,8 +22,6 @@ function getSentiment(text){
     const correctSpelling = tokenized.map((word) => spellCorrector.correct(word))
 
     const stopWordsRemoved =  stopword.removeStopwords(correctSpelling)
-
-    console.log(stopWordsRemoved)
 
     const analyzed = analyzer.getSentiment(stopWordsRemoved);
 

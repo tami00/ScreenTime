@@ -16,6 +16,7 @@ const Reviews = (props) => {
 
     const handleChange = (e) => {
         setReview(e.target.value)
+        // console.log(e.target.value)
     }
 
     const onSubmit = (e) => {
@@ -33,7 +34,7 @@ const Reviews = (props) => {
             if(response.data.success) {
                 setReview("")
                 props.refreshFunction(response.data.result)
-                console.log(JSON.stringify(review))
+                // console.log(JSON.stringify(review))
             } else {
                 alert('Failed to save review')
             }
@@ -41,23 +42,26 @@ const Reviews = (props) => {
 
     }
     
-    // useEffect(() => {
-    //     async function fetchSentiment(review) {
-    //     const result = Axios.post('http://localhost:8080/api/sentiment/analysis', JSON.stringify(review), {headers: authHeader(), "Content-Type": "application/json"})
-    //           .then(response => {
-    //               if (response.data.success) {
-    //                   console.log('HERE',response.data)
-    //                   setSentiment(result.sentiment)
-    //               } else {
-    //                   alert('Error')
-    //               }
-    //           })
-    //           .catch((error) => {
-    //               console.log(error.response)
-    //           })
-    //     }
-    //     fetchSentiment(review)
-    //   }, [review])
+    useEffect(() => {
+        async function fetchSentiment(review) {
+        console.log(review)
+        const result = Axios.post('http://localhost:8080/api/sentiment/analysis', {data:review} , {headers: authHeader()})
+              .then(response => {
+                if(response.data){
+                    if (response.data.success) {
+                        console.log('HERE',response.data)
+                        //   setSentiment(result.sentiment) 
+                  } else {
+                      alert('Error')
+                  }
+                }
+              })
+              .catch((error) => {
+                  console.log(error)
+              })
+        }
+        fetchSentiment(review)
+      }, [review])
   
 
 

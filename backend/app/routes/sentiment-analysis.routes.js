@@ -11,9 +11,19 @@ router.use(function(req, res, next) {
 });
 
 router.post('/analysis', (req, res) => {
+    console.dir(req.body)
+    console.log('REQ.BODY')
+    if (req.body.hasOwnProperty('data')) {
     const data = req.body.data
+    console.log(data)
     const sentiment = getSentiment(data)
-    return res.send({sentiment})
+    res.send({
+      sentimentScore : sentiment,
+      success: true})
+    }
+    else {
+      res.send('Failed')
+    }
 })
 
 module.exports = router;
