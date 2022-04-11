@@ -1,14 +1,9 @@
 const express =  require('express');
-const router = express.Router();
-const { authJwt } = require("../middlewares");
+const User = db.user;
 const { route } = require('./favourite.routes');
+const messagebird = require('messagebird')(process.env.MESSAGEBIRD_API_KEY);
+const moment = require('moment');
 
-    router.use(function(req, res, next) {
-      res.header(
-        "Access-Control-Allow-Headers",
-        "x-access-token, Origin, Content-Type, Accept"
-      );
-      next();
-});
-
-route.post('/getU')
+loggedInUser = (req, res, next) => {
+  
+}
