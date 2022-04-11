@@ -27,6 +27,7 @@ const Reviews = (props) => {
             content: review,
             author: currentUser.id,
             reviewId: props.reviewId,
+            // sentimentScore : sentiment
         }
 
         Axios.post('http://localhost:8080/api/review/addReview', variables,{ headers: authHeader()})
@@ -49,8 +50,7 @@ const Reviews = (props) => {
               .then(response => {
                 if(response.data){
                     if (response.data.success) {
-                        console.log('HERE',response.data)
-                        //   setSentiment(result.sentiment) 
+                        setSentiment(result.sentiment) 
                   } else {
                       alert('Error')
                   }
@@ -63,7 +63,6 @@ const Reviews = (props) => {
         fetchSentiment(review)
       }, [review])
   
-
 
       
     return (
