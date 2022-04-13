@@ -46,7 +46,7 @@ const Reviews = (props) => {
     useEffect(() => {
         async function fetchSentiment(review) {
         console.log(review)
-        const result = Axios.post('http://localhost:8080/api/sentiment/analysis', {data:review} , {headers: authHeader()})
+        const result = await Axios.post('http://localhost:8080/api/sentiment/analysis', {data:review} , {headers: authHeader()})
               .then(response => {
                 if(response.data){
                     if (response.data.success) {
@@ -62,6 +62,7 @@ const Reviews = (props) => {
         }
         fetchSentiment(review)
       }, [review])
+
   
 
       

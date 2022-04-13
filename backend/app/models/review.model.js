@@ -6,7 +6,7 @@ const Review = mongoose.model(
     movieId: String,
     reviewId: String,
     content: String,
-    // sentimentScore: String,
+    sentimentScore: String,
     author: [
       {
         type: mongoose.Schema.Types.ObjectId,

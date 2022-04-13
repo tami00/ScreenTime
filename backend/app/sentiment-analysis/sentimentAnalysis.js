@@ -10,7 +10,7 @@ spellCorrector.loadDictionary();
 const analyzer = new SentimentAnalyzer('English', PorterStemmer, 'afinn')
 
 function getSentiment(text){
-    console.log(typeof text)
+    // console.log(typeof text)
     if(!text.trim()) {
         return 0;
     }
@@ -25,12 +25,24 @@ function getSentiment(text){
 
     const analyzed = analyzer.getSentiment(stopWordsRemoved);
 
-    console.log(analyzed)
+    if (analyzed >=1) {
+        return 1
+    }
+
+    else if (analyzed === 0) {
+        return 0
+    }
+
+    else {
+        return -1
+    }
+
+    // console.log(analyzed)
 
 }
 
 module.exports = getSentiment;
 
-console.log(getSentiment("Wow this is fantaztic!"))
-console.log(getSentiment("let's go together?"))
-console.log(getSentiment("this is so bad, I hate it, it sucks!"))
+// console.log(getSentiment("Wow this is fantaztic!"))
+// console.log(getSentiment("let's go together?"))
+// console.log(getSentiment("this is so bad, I hate it, it sucks!"))

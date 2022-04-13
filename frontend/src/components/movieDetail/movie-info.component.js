@@ -11,12 +11,9 @@ import authHeader from '../../services/auth-header';
 import Axios from 'axios';
 
 const MovieInfoComponent = () => {
-    const link = "https://www.youtube.com/embed/{4UZrsTqkcW4}"
     const[trailerDetails, setTrailerDetails] = useState();
     const [reviewList, setReviewList] = useState([]);
     const [movieInfo, setMovieInfo] = useState();
-    const [modal, setModal] = useState(false);
-    const [videoLoading, setVideoLoading] = useState(true);
     const {id} = useParams()
     //console.log(id)
 
@@ -40,14 +37,6 @@ const MovieInfoComponent = () => {
       const res =  await trailer(id);
       setTrailerDetails(res);
     }
-
-    const openModal = () => {
-      setModal(!modal);
-    };
-
-    const spinner = () => {
-      setVideoLoading(!videoLoading);
-    };
 
     const updateReview = (newReview) => {
       setReviewList(reviewList.concat(newReview))
@@ -92,44 +81,6 @@ const MovieInfoComponent = () => {
               Plot: {movieInfo?.overview}
             </MovieInfo>
           </InfoColumn>
-          <Button onClick={openModal}>Play
-            {
-              modal ? (
-                <section className="modal__bg">
-                  <div className="modal__align">
-                    <div className="modal__content" modal={modal}>
-                      <IoCloseOutline
-                        className="modal__close"
-                        arial-label="Close modal"
-                        onClick={setModal}
-                      />
-                      <div className="modal__video-align">
-                        {videoLoading ? (
-                          <div className="modal__spinner">
-                            <BiLoaderAlt
-                              className="modal__spinner-style"
-                              fadeIn="none"
-                            />
-                          </div>
-                        ) : null}
-                        <iframe
-                          className="modal__video-style"
-                          onLoad={spinner}
-                          loading="lazy"
-                          width="800"
-                          height="500"
-                          src="https://www.youtube.com/embed/jK2VROKKTSQ"
-                          title="YouTube video player"
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowfullscreen
-                        ></iframe>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-              ) : null}
-          </Button>
           <div>
           <FavouriteComp userFrom = {localStorage.getItem('userId')} movieInfo={movieInfo}/>
           </div>
