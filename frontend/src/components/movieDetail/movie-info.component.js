@@ -3,19 +3,14 @@ import { Container, Container2, PosterImg, InfoColumn, MovieName, MovieInfo, But
 import { useParams } from "react-router-dom";
 import Reviews from "../review/reviews";
 import { getDetails } from "../../services/movieAPI.service";
-import { trailer } from "../../services/movieAPI.service";
-import { BiLoaderAlt } from "react-icons/bi";
-import {IoCloseOutline} from "react-icons/io5";
 import FavouriteComp from "../favourites/favourite.component";
 import authHeader from '../../services/auth-header';
 import Axios from 'axios';
 
 const MovieInfoComponent = () => {
-    const[trailerDetails, setTrailerDetails] = useState();
     const [reviewList, setReviewList] = useState([]);
     const [movieInfo, setMovieInfo] = useState();
     const {id} = useParams()
-    //console.log(id)
 
     useEffect( ()=>{
    
@@ -26,43 +21,23 @@ const MovieInfoComponent = () => {
       })();
       
     },[])
-
-  // const getTrailer = () =>{
       
-    useEffect(() => {
-      console.log(trailerDetails?.results)
-    }, [trailerDetails]);
-
-    const handleClick = async () => {
-      const res =  await trailer(id);
-      setTrailerDetails(res);
-    }
-
     const updateReview = (newReview) => {
       setReviewList(reviewList.concat(newReview))
     }
 
     useEffect(() => {
-      Axios.post('http://localhost:8080/api/review/getReviews', id, { headers: authHeader()})
+      Axios.post('http://localhost:8080/api/review/getReviews', {data:id}, { headers: authHeader()})
             .then(response => {
                 if (response.data.success) {
-                    console.log(id,'response.data.reviews',response.data.reviews)
-                    // setReviewList(response.data.reviews)
+                    console.log('All Reviews',response.data.reviews)
+                    setReviewList(response.data.reviews)
                 } else {
                     alert('Error')
                 }
             })
     }, [])
 
-
-  // }
-
-    // useEffect (() =>{
-    //   (async ()=>{
-    //     const response = await trailer(id)
-    //     setTrailerDetails(response)
-    //   })();
-    // },[])
   
     return (
       <Container>

@@ -29,9 +29,21 @@ router.post("/addReview", [authJwt.verifyToken], (req, res) => {
 })
 
 router.post("/getReviews", [authJwt.verifyToken], (req, res) => {
-    Review.find({"movieId": req.body.id}) 
-    console.log(req.body.id)
+    Review.find({"movieId": req.body.data}) 
+    // console.log("ID ", req.body.data)
     .populate('author')
+    .exec((err, reviews) => {
+        if(err) return res.status(400).send(err)
+        res.status(200).json({success: true, reviews})
+    })
+    
+})
+
+router.post("/getUserReviews", [authJwt.verifyToken], (req, res) => {
+    Review.find({"userId": req.body.data}) 
+    .populate({
+        path: 'author.user',
+        model: 'Review'})
     .exec((err, reviews) => {
         if(err) return res.status(400).send(err)
         res.status(200).json({success: true, reviews})
