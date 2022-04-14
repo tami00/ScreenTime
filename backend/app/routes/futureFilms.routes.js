@@ -22,9 +22,9 @@ router.post("/addToFutureFilms", [authJwt.verifyToken], (req, res) => {
 })
 
 router.post("/getFutureFilms", [authJwt.verifyToken], (req, res) => {
-    Review.find({"userId": req.body.data}) 
+    FutureFilms.find({"userId": req.body.data}) 
     // console.log("ID ", req.body.data)
-    .populate('author')
+    .populate('author.user')
     .exec((err, films) => {
         if(err) return res.status(400).send(err)
         res.status(200).json({success: true, films})
