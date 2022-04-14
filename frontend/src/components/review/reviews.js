@@ -5,6 +5,7 @@ import authService from '../../services/auth.service'
 import authHeader from '../../services/auth-header';
 import FirstReview from './FirstReview';
 import { useEffect } from 'react';
+import ReplyReview from './ReplyReview';
 
 const {TextArea} = Input;
 
@@ -58,11 +59,12 @@ const Reviews = (props) => {
       
     return (
         <div>
-                <p>Reviews</p>
+                <p>replies</p>
                 {props.reviewList && props.reviewList.map((review, index) => (
                     (!review.responseTo &&
                     <React.Fragment key={review._id}>
                         <FirstReview review={review} movieId={props.movieId} refreshFunction={props.refreshFunctions}/>
+                        <ReplyReview ReviewList={props.ReviewList} movieId={props.movieId} parentReviewId={review_.id} refreshFunction={props.refreshFunction}/>
                     </React.Fragment>
                 )))}
                 <form style={{display: 'flex'}} onSubmit>
