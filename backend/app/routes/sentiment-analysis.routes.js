@@ -19,7 +19,7 @@ router.post('/analysis', (req, res) => {
     const sentiment = getSentiment(data)
     console.log(sentiment)
     res.send({
-      sentimentScore: sentiment,
+      sentiment,
       success: true})
     }
     else {

@@ -27,7 +27,7 @@ const Reviews = (props) => {
             content: review,
             author: currentUser.id,
             reviewId: props.reviewId,
-            // sentimentScore : sentiment
+            sentimentScore : sentiment
         }
 
         Axios.post('http://localhost:8080/api/review/addReview', variables,{ headers: authHeader()})
@@ -43,26 +43,16 @@ const Reviews = (props) => {
 
     }
     
-    useEffect(() => {
+      useEffect(() => {
         async function fetchSentiment(review) {
         console.log(review)
         const result = await Axios.post('http://localhost:8080/api/sentiment/analysis', {data:review} , {headers: authHeader()})
-              .then(response => {
-                if(response.data){
-                    if (response.data.success) {
-                        setSentiment(result.sentiment) 
-                  } else {
-                      alert('Error')
-                  }
+              .then((response) => response.data);
+                setSentiment(result.sentiment);
+                console.log(sentiment)
                 }
-              })
-              .catch((error) => {
-                  console.log(error)
-              })
-        }
         fetchSentiment(review)
       }, [review])
-
   
 
       
