@@ -6,6 +6,7 @@ const FutureFilms = mongoose.model(
         movieId : String,
         movieTitle: String,
         movieImg: String,
+        movieDate: String,
         userFrom:[
             {
                 type: mongoose.Schema.Types.ObjectId,

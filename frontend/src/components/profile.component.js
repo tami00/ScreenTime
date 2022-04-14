@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import AuthService from "../services/auth.service";
 import { Menu, Container } from 'semantic-ui-react';
 import SentimentComponent from "./sentiment-analysis/sentiment.component";
+import FutureFilms from "./futureFilms/futureFilms.component";
 
 export default class Profile extends Component {
   constructor(props) {
@@ -25,6 +26,15 @@ export default class Profile extends Component {
   state = { activeItem: 'films' }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+
+  renderSwitch(activeItem) {
+    switch(activeItem) {
+      case 'reviews':
+        return <SentimentComponent/>;
+      case 'films':
+        return <FutureFilms/>;
+    }
+  }
 
 
   render() {
@@ -85,8 +95,7 @@ export default class Profile extends Component {
             onClick={this.handleItemClick}
           />
         </Menu>
-        {activeItem === 'reviews' ? <SentimentComponent/>
-        : "You haven't created an reviews yet"}
+        {this.renderSwitch(activeItem)}
       </div>
     );
   }

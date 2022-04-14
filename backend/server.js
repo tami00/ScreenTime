@@ -37,6 +37,7 @@ db.mongoose
 app.use('/api/favourite', require('./app/routes/favourite.routes'));
 app.use('/api/review', require('./app/routes/review.routes'));
 app.use('/api/sentiment', require('./app/routes/sentiment-analysis.routes'));
+app.use('/api/futureFilms', require('./app/routes/futureFilms.routes'));
 // routes
 // require(".app/routes/favourite.routes")(app);
 require("./app/routes/auth.routes")(app);
