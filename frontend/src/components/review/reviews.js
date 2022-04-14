@@ -64,7 +64,7 @@ const Reviews = (props) => {
                     (!review.responseTo &&
                     <React.Fragment key={review._id}>
                         <FirstReview review={review} movieId={props.movieId} refreshFunction={props.refreshFunctions}/>
-                        <ReplyReview ReviewList={props.ReviewList} movieId={props.movieId} parentReviewId={review_.id} refreshFunction={props.refreshFunction}/>
+                        <ReplyReview ReviewList={props.ReviewList} movieId={props.movieId} parentReviewId={review._id} refreshFunction={props.refreshFunction}/>
                     </React.Fragment>
                 )))}
                 <form style={{display: 'flex'}} onSubmit>
