@@ -15,6 +15,7 @@ const MovieInfoComponent = () => {
     const [movieInfo, setMovieInfo] = useState();
     const [modal, setModal] = useState(false);
     const [videoLoading, setVideoLoading] = useState(true);
+    const [ReviewLists, setReviewLists] = useState([]);
     const {id} = useParams()
     //console.log(id)
 
@@ -48,14 +49,9 @@ const MovieInfoComponent = () => {
     };
 
 
-  // }
-
-    // useEffect (() =>{
-    //   (async ()=>{
-    //     const response = await trailer(id)
-    //     setTrailerDetails(response)
-    //   })();
-    // },[])
+    const updateReview = (newReview) => {
+      setReviewLists(ReviewLists.concat(newReview))
+  }
   
     return (
       <Container>
@@ -74,44 +70,6 @@ const MovieInfoComponent = () => {
               Plot: {movieInfo?.overview}
             </MovieInfo>
           </InfoColumn>
-          <Button onClick={openModal}>Play
-            {
-              modal ? (
-                <section className="modal__bg">
-                  <div className="modal__align">
-                    <div className="modal__content" modal={modal}>
-                      <IoCloseOutline
-                        className="modal__close"
-                        arial-label="Close modal"
-                        onClick={setModal}
-                      />
-                      <div className="modal__video-align">
-                        {videoLoading ? (
-                          <div className="modal__spinner">
-                            <BiLoaderAlt
-                              className="modal__spinner-style"
-                              fadeIn="none"
-                            />
-                          </div>
-                        ) : null}
-                        <iframe
-                          className="modal__video-style"
-                          onLoad={spinner}
-                          loading="lazy"
-                          width="800"
-                          height="500"
-                          src="https://www.youtube.com/embed/jK2VROKKTSQ"
-                          title="YouTube video player"
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowfullscreen
-                        ></iframe>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-              ) : null}
-          </Button>
           <div>
           <FavouriteComp userFrom = {localStorage.getItem('userId')} movieInfo={movieInfo}/>
           </div>
@@ -120,7 +78,7 @@ const MovieInfoComponent = () => {
           </div>
           <div>
           <Container2>
-            <Reviews movieInfo = {movieInfo}/>
+            <Reviews movieInfo = {movieInfo} refreshFunction={updateReview}/>
           </Container2>
           </div>
       </Container>

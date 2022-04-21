@@ -40,10 +40,8 @@ router.post("/getReviews", [authJwt.verifyToken], (req, res) => {
 })
 
 router.post("/getUserReviews", [authJwt.verifyToken], (req, res) => {
-    Review.find({"userId": req.body.data}) 
-    .populate({
-        path: 'author.user',
-        model: 'Review'})
+    Review.find({ author: req.body.data }) 
+    .populate('author')
     .exec((err, reviews) => {
         if(err) return res.status(400).send(err)
         res.status(200).json({success: true, reviews})
