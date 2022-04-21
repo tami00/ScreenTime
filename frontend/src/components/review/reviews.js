@@ -25,7 +25,7 @@ const Reviews = (props) => {
 
         const variables = {
             movieId: props.movieId,
-            // movieTitle: props.title,
+            movieTitle: props.movieTitle,
             content: review,
             author: currentUser.id,
             reviewId: props.reviewId,

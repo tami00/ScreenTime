@@ -22,6 +22,7 @@ function FirstReview(props) {
 
     const variables = {
       author: currentUser.id,
+      movieTitle: props.movieTitle,
       movieId: props.movieId,
       responseTo: props.review._id,
       content: reviewValue

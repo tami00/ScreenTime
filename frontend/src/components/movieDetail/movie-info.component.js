@@ -78,7 +78,7 @@ const MovieInfoComponent = () => {
           </div>
           <div>
           <Container2>
-            <Reviews movieInfo = {movieInfo} refreshFunction={updateReview}/>
+            <Reviews movieInfo = {movieInfo} refreshFunction={updateReview} movieId={movieInfo?.id} movieTitle={movieInfo?.title}/>
           </Container2>
           </div>
       </Container>

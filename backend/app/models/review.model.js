@@ -4,7 +4,7 @@ const Review = mongoose.model(
   "Review",
   new mongoose.Schema({
     movieId: String,
-    // movieTitle: String,
+    movieTitle: String,
     reviewId: String,
     content: String,
     sentimentScore: String,
