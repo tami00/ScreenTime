@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const db = require("./app/models");
-const Role = db.role;
+// const Role = db.role;
 
 db.mongoose
   .connect(`mongodb+srv://tami00:MEUxClWqUNbLz359@cluster0.gmvao.mongodb.net/test?retryWrites=true&w=majority`, {
@@ -26,7 +26,7 @@ db.mongoose
   })
   .then(() => {
     console.log("Successfully connect to MongoDB.");
-    initial();
+    // initial();
   })
   .catch(err => {
     console.error("Connection error", err);
@@ -38,6 +38,7 @@ app.use('/api/favourite', require('./app/routes/favourite.routes'));
 app.use('/api/review', require('./app/routes/review.routes'));
 app.use('/api/sentiment', require('./app/routes/sentiment-analysis.routes'));
 app.use('/api/futureFilms', require('./app/routes/futureFilms.routes'));
+app.use('/api/watchlist', require('./app/routes/notification.routes'));
 // routes
 // require(".app/routes/favourite.routes")(app);
 require("./app/routes/auth.routes")(app);
@@ -49,38 +50,38 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
 
-function initial() {
-  Role.estimatedDocumentCount((err, count) => {
-    if (!err && count === 0) {
-      new Role({
-        name: "user"
-      }).save(err => {
-        if (err) {
-          console.log("error", err);
-        }
+// function initial() {
+//   Role.estimatedDocumentCount((err, count) => {
+//     if (!err && count === 0) {
+//       new Role({
+//         name: "user"
+//       }).save(err => {
+//         if (err) {
+//           console.log("error", err);
+//         }
 
-        console.log("added 'user' to roles collection");
-      });
+//         console.log("added 'user' to roles collection");
+//       });
 
-      new Role({
-        name: "creator"
-      }).save(err => {
-        if (err) {
-          console.log("error", err);
-        }
+//       new Role({
+//         name: "creator"
+//       }).save(err => {
+//         if (err) {
+//           console.log("error", err);
+//         }
 
-        console.log("added 'creator' to roles collection");
-      });
+//         console.log("added 'creator' to roles collection");
+//       });
 
-      new Role({
-        name: "watcher"
-      }).save(err => {
-        if (err) {
-          console.log("error", err);
-        }
+//       new Role({
+//         name: "watcher"
+//       }).save(err => {
+//         if (err) {
+//           console.log("error", err);
+//         }
 
-        console.log("added 'watcher' to roles collection");
-      });
-    }
-  });
-}
+//         console.log("added 'watcher' to roles collection");
+//       });
+//     }
+//   });
+// }
