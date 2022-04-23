@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const messagebird = require('messagebird')('MESSAGEBIRD_API_KEY');
+const messagebird = require('messagebird')('HWrwY0QM7uZ7qk3SDobPO25ms');
 const moment = require('moment');
 const { authJwt } = require("../middlewares");
 
-require('dotenv').config();
+require('dotenv').config({});
 
 router.use(function (req, res, next) {
     res.header(
@@ -30,11 +30,14 @@ router.post("/notifications", [authJwt.verifyToken], (req, res) => {
 
         //retrieve user phone number from inside array 
         userFrom.forEach(function (item ) {
-            const phoneNo = item.phoneNo 
+            const digits = item.phoneNo 
+            const countryCode = "353" 
+            const phoneNo = countryCode + digits
+            console.log(phoneNo)
             //check if phone number is valid
-            messagebird.lookup.read(phoneNo, process.env.COUNTRY_CODE, function (err, response){
-                console.log(err);
-                console.log(response)
+            messagebird.lookup.read(phoneNo, function (err, res){
+                // console.log(err);
+                // console.log(res)
 
                 if (err&& err.errors[0].code == 21) {
                     //unknown format
@@ -44,10 +47,10 @@ router.post("/notifications", [authJwt.verifyToken], (req, res) => {
                     if(err)
                     //different error
                      {
-                        console.log("Error")
+                        console.log("error")
                     }
                     else {
-                        if (response.type != mobile) {
+                        if (res.type != "mobile") {
                             console.log("Enter a mobile number")
                         }
 
@@ -60,6 +63,15 @@ router.post("/notifications", [authJwt.verifyToken], (req, res) => {
         })
         
     });
+})
+
+router.get("/test", (req,res) => {
+    messagebird.lookup.read('3530877611348', function (err, response) {
+        if (err) {
+          return console.log(err);
+        }
+        return console.log(response.countryCode);
+      });
 })
 
 module.exports = router;
