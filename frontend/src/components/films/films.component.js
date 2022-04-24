@@ -44,10 +44,10 @@ function Films(props) {
         })
   }
 
-  // const onClick = () => {
-  //   const res = futureFilmsList[0].userFrom
-  //   console.log(res[0].phoneNo)
-  // }
+  const onClick = () => {
+    const res = futureFilmsList[0].userFrom
+    console.log(res)
+  }
 
 
   return (

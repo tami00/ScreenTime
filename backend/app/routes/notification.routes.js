@@ -21,15 +21,16 @@ router.post("/notifications", [authJwt.verifyToken], (req, res) => {
     result.forEach(function (item) {
         const movieDate = item.movieDate;
         const userFrom = item.userFrom;
-        // console.log(item.movieTitle);
+        const title = item.movieTitle;
         var earliestPossibleDT = moment().add(1,'days');;
-        var reminderDT = moment(movieDate);
-        if (reminderDT.isBefore(earliestPossibleDT)) {
-            // console.log('This movie was released already')
+        var releaseDT = moment(movieDate);
+        if (releaseDT.isBefore(earliestPossibleDT)) {
+            console.log(title + ' movie was released already')
         }
 
         //retrieve user phone number from inside array 
         userFrom.forEach(function (item ) {
+            const username = item.username
             const digits = item.phoneNo 
             const countryCode = "353" 
             const phoneNo = countryCode + digits
@@ -54,8 +55,33 @@ router.post("/notifications", [authJwt.verifyToken], (req, res) => {
                             console.log("Enter a mobile number")
                         }
 
+                        else if (releaseDT.isBefore(earliestPossibleDT)){
+                            console.log(title + " has already been released!")
+                        }
                         else {
-                            console.log("All good")
+                            //schedule reminder week before release
+                            // var reminderDT = releaseDT.clone().subtract(1, 'days');
+                            var reminderDT = moment().add(5, 'minutes')
+                            console.log(reminderDT)
+
+                            messagebird.messages.create({
+                                originator : "Movie App",
+                                recipients: [phoneNo],
+                                scheduledDatetime: reminderDT.format(),
+                                body: "Hey " + username + ", don't forget that " + title + " is out next week on the "
+                                + releaseDT.format('MMMM Do YYYY')
+                            }, function (err, response) {
+                                if (err) {
+                                    //request failed
+                                    console.log("ERROR sending message" + err);
+                                } else {
+                                    //successful
+                                    console.log(response);
+
+
+                                }
+
+                            })
                         }
                     }
                 }
@@ -70,7 +96,10 @@ router.get("/test", (req,res) => {
         if (err) {
           return console.log(err);
         }
-        return console.log(response.countryCode);
+        //  var reminderDT = moment().add(5, 'minutes')
+        //  console.log(reminderDT)
+
+
       });
 })
 
