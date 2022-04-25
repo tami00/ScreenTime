@@ -77,7 +77,7 @@ router.post("/notifications", [authJwt.verifyToken], (req, res) => {
                                 } else {
                                     //successful
                                     console.log(response);
-
+                                    console.log("Message sent")
 
                                 }
 
@@ -102,5 +102,29 @@ router.get("/test", (req,res) => {
 
       });
 })
+
+router.get("/testSMS/:phone", (req,res) => {
+    const { phone } = req.params;
+
+    if (!/^\+[1-9]{1}[0-9]{3,14}$/.test(phone)) {
+        return res.status(400).send("Invalid phone number");
+      }
+
+    messagebird.messages.create({
+        originator : 'Movie App',
+        recipients : [phone],
+        body : 'TESTING MESSAGE BIRD'
+     }, function (err, response) {
+        if (err) {
+           console.log("ERROR:");
+           console.log(err);
+       } else {
+           console.log("SUCCESS:");
+           console.log(response);
+       }
+    });
+})
+
+
 
 module.exports = router;
