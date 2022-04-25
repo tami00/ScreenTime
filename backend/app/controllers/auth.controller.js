@@ -1,6 +1,7 @@
 const config = require("../config/auth.config");
 const db = require("../models");
 const User = db.user;
+const nodemailer = require("nodemailer")
 // const Role = db.role;
 
 var jwt = require("jsonwebtoken");
@@ -21,46 +22,34 @@ exports.signup = (req, res) => {
 
     res.send({ message: "User was registered successfully!" });
 
-    // if (req.body.roles) {
-    //   Role.find(
-    //     {
-    //       name: { $in: req.body.roles }
-    //     },
-    //     (err, roles) => {
-    //       if (err) {
-    //         res.status(500).send({ message: err });
-    //         return;
-    //       }
+    let transporter = nodemailer.createTransport({
+      host: "smtp-mail.outlook.com",
+      port: 587,
+      secure: false, 
+      auth: {
+        user: "testfypuser@outlook.com", 
+        pass: "1234567FYP!", 
+      },
+      tls: {
+        // do not fail on invalid certs
+        rejectUnauthorized: false
+    },
+    });
 
-    //       user.roles = roles.map(role => role._id);
-    //       user.save(err => {
-    //         if (err) {
-    //           res.status(500).send({ message: err });
-    //           return;
-    //         }
+    var mailOptions = {
+      from: "testfypuser@outlook.com",
+      to: user.email,
+      subject: 'Thanks for registering with Movie App',
+      text: 'Blah Blah blah'
+    };
 
-    //         res.send({ message: "User was registered successfully!" });
-    //       });
-    //     }
-    //   );
-    // } else {
-    //   Role.findOne({ name: "user" }, (err, role) => {
-    //     if (err) {
-    //       res.status(500).send({ message: err });
-    //       return;
-    //     }
+    transporter.sendMail(mailOptions, function(error, info){
+      if(error){
+          return console.log(error);
+      }
+      console.log('Message sent: ' + info.response);
+  });
 
-    //     user.roles = [role._id];
-    //     user.save(err => {
-    //       if (err) {
-    //         res.status(500).send({ message: err });
-    //         return;
-    //       }
-
-    //       res.send({ message: "User was registered successfully!" });
-    //     });
-    //   });
-    // }
   });
 };
 
