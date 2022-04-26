@@ -13,7 +13,6 @@ function FavouriteComp(props) {
 
     const currentUser = authService.getCurrentUser();
 
-    const [favouriteNumber, setFavouriteNumber] = useState(0);
     const [favourited, setFavourited] =  useState(false);
 
     const variable = {
@@ -23,36 +22,14 @@ function FavouriteComp(props) {
         movieTitle: props.movieInfo?.title,
         movieImg: props.movieInfo?.poster_path
     }
-    
-    useEffect(() => {
-
-        Axios.post('/api/favourite/favouriteNumber', variable)
-        .then(response => {
-            if(response.data.success){
-                setFavouriteNumber(response.data.favouriteNumber)
-            }else {
-                alert('Failed to get number');
-            }
-        })
-
-        Axios.post('/api/favourite/favourited', variable) 
-            .then(response =>{
-                if(response.data.success){
-                    setFavourited(response.data.favourited)
-                }else {
-                    alert('Failed to get info');
-                }
-            })
-
-    }, [])
 
     const onClickFavourite = () => {
         if(favourited) {
-            Axios.post('/api/favourite/removeFavorite', variable)
+            Axios.post('http://localhost:8080/api/favourite/removeFavorite', variable, { headers: authHeader() })
                 .then(response =>{
                     if(response.data.success){
-                        setFavouriteNumber(favouriteNumber - 1)
                         setFavourited(!favourited)
+                        console.log("Removed from favourites")
                     }else {
                         alert('Failed to remove');
                     }
@@ -62,8 +39,8 @@ function FavouriteComp(props) {
             Axios.post('http://localhost:8080/api/favourite/addToFavourite', variable, { headers: authHeader() })
                 .then(response =>{
                     if(response.data.success){
-                        setFavouriteNumber(favouriteNumber + 1)
                         setFavourited(!favourited)
+                        console.log("Added to favourites")
                     }else {
                         alert('Failed to add');
                     }
@@ -71,10 +48,24 @@ function FavouriteComp(props) {
         }
     }
 
+    useEffect(() => {
+
+        Axios.post('http://localhost:8080/api/favourite/favourited', variable, { headers: authHeader() }) 
+            .then(response =>{
+                if(response.data.success){
+                    setFavourited(response.data.favourited)
+                    console.log(response.data.favourited)
+                }else {
+                    alert('Failed to get info');
+                }
+            })
+
+    }, [])
+
 
     return (
         <div>
-            <FavouriteButton onClick={onClickFavourite}>{favourited? "removed" : "add"}{favouriteNumber}</FavouriteButton>
+            <FavouriteButton onClick={onClickFavourite}>{!favourited ? "add" : "remove"}</FavouriteButton>
         </div>
     )
 }
