@@ -13,6 +13,7 @@ import Login from "./components/login.component";
 import MovieListComponent from "./components/movieDetail/movie-list.component";
 import Profile from "./components/profile.component";
 import Register from "./components/register.component";
+import UpdatePortfolio from "./components/portfolio/uploadPortfolio"
 import AuthService from "./services/auth.service";
 import MovieInfoComponent from "./components/movieDetail/movie-info.component";
 
@@ -56,7 +57,7 @@ const App = () => {
             </Link>
           </li>
 
-            {/* might replace for creator stuff -- discover/start campaign */}
+          {/* might replace for creator stuff -- discover/start campaign */}
           {currentUser && (
             <li className="nav-item">
               <Link to={"/user"} className="nav-link">
@@ -64,12 +65,21 @@ const App = () => {
               </Link>
             </li>
           )}
+
+          {currentUser && (
+            <li className="nav-item">
+              <Link to={"/portfolio"} className="nav-link">
+                Portfolio
+              </Link>
+            </li>
+          )}
         </div>
+
 
         {/* passing a callback function to the Search component which will return
         the result returned from the api. Keeping the movie list state in app.js to map the movies here */}
 
-        {locationState=='/register'||locationState=='/login'?null:<Search/>}
+        {locationState == '/register' || locationState == '/login' ? null : <Search />}
 
 
         {currentUser ? (
@@ -108,9 +118,10 @@ const App = () => {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/profile" component={Profile} />
-          <Route exact path="/films/:title/:id" children={<MovieInfoComponent/>}/>
-          <Route exact path="/films/:title" children={<MovieListComponent/>}/>
+          <Route exact path="/films/:title/:id" children={<MovieInfoComponent />} />
+          <Route exact path="/films/:title" children={<MovieListComponent />} />
           <Route path="/user" component={BoardUser} />
+          <Route path="/portfolio" component={UpdatePortfolio} />
         </Switch>
       </div>
       {/* {selectedMovie && <MovieInfoComponent selectedMovie={selectedMovie} />} */}
