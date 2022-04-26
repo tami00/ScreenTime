@@ -16,7 +16,6 @@ function FavouriteComp(props) {
     const [favourited, setFavourited] =  useState(false);
 
     const variable = {
-        //change userFrom
         userFrom: currentUser.id,
         movieId: props.movieInfo?.id,
         movieTitle: props.movieInfo?.title,
@@ -24,6 +23,7 @@ function FavouriteComp(props) {
     }
 
     const onClickFavourite = () => {
+        //if user already likes the film - remove it
         if(favourited) {
             Axios.post('http://localhost:8080/api/favourite/removeFavorite', variable, { headers: authHeader() })
                 .then(response =>{
@@ -35,6 +35,7 @@ function FavouriteComp(props) {
                     }
                 })
 
+                //if not -  add to favourites
         }else {
             Axios.post('http://localhost:8080/api/favourite/addToFavourite', variable, { headers: authHeader() })
                 .then(response =>{
@@ -49,12 +50,11 @@ function FavouriteComp(props) {
     }
 
     useEffect(() => {
-
         Axios.post('http://localhost:8080/api/favourite/favourited', variable, { headers: authHeader() }) 
             .then(response =>{
                 if(response.data.success){
-                    setFavourited(response.data.favourited)
-                    console.log(response.data.favourited)
+                    // setFavourited(response.data.favourited)
+                    console.log(response.data)
                 }else {
                     alert('Failed to get info');
                 }

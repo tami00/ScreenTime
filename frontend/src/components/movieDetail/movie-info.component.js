@@ -74,7 +74,7 @@ const MovieInfoComponent = () => {
         </MovieInfo>
       </InfoColumn>
       <div>
-        <FavouriteComp userFrom={localStorage.getItem('userId')} movieInfo={movieInfo} />
+        <FavouriteComp movieInfo={movieInfo} />
       </div>
       <div>
         <AddButton onClick={onClick}/>

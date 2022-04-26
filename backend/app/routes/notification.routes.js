@@ -91,17 +91,17 @@ router.post("/notifications", [authJwt.verifyToken], (req, res) => {
     });
 })
 
-router.get("/test", (req,res) => {
-    messagebird.lookup.read('3530877611348', function (err, response) {
-        if (err) {
-          return console.log(err);
-        }
-        //  var reminderDT = moment().add(5, 'minutes')
-        //  console.log(reminderDT)
+// router.get("/test", (req,res) => {
+//     messagebird.lookup.read('12233333', function (err, response) {
+//         if (err) {
+//           return console.log(err);
+//         }
+//         //  var reminderDT = moment().add(5, 'minutes')
+//         //  console.log(reminderDT)
 
 
-      });
-})
+//       });
+// })
 
 router.get("/testSMS/:phone", (req,res) => {
     const { phone } = req.params;
