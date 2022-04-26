@@ -71,11 +71,11 @@ const Reviews = (props) => {
                 <form style={{display: 'flex'}} onSubmit>
                     <TextArea
                         style={{width: '100%', borderRadius: '5px'}}
-                        placeholder = "leave a review"
+                        placeholder = "..."
                         value={review}
                         onChange={handleChange}
                         />
-                        <Button style = {{width: '20%', height: '52px'}} onClick={onSubmit}></Button>
+                        <Button onClick={onSubmit}></Button>
                 </form>
         </div>
     );
