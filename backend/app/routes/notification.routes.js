@@ -120,7 +120,7 @@ router.get("/testSMS/:phone", (req,res) => {
            console.log(err);
        } else {
            console.log("SUCCESS:");
-           console.log(response);
+           console.log(response.recipients);
        }
     });
 })
