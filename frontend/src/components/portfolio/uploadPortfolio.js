@@ -30,7 +30,7 @@ function UpdatePortfolio() {
     const onDrop = (files) => {
       let formData = new FormData();
       const config = {
-        headers: {'Authorization': authHeader(),
+        headers: {
                 'content-type': 'multipart/form-data'}
       }
       console.log(files)
