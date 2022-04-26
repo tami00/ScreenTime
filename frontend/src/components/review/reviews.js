@@ -64,7 +64,7 @@ const Reviews = (props) => {
                 {props.reviewList && props.reviewList.map((review, index) => (
                     (!review.responseTo &&
                     <React.Fragment key={review._id}>
-                        <FirstReview review={review} movieId={props.movieId} refreshFunction={props.refreshFunction}/>
+                        <FirstReview review={review} movieId={props.movieId} refreshFunction={props.refreshFunctions}/>
                         <ReplyReview ReviewList={props.ReviewList} movieId={props.movieId} parentReviewId={review._id} refreshFunction={props.refreshFunction}/>
                     </React.Fragment>
                 )))}
