@@ -28,11 +28,11 @@ function FavouriteComp(props) {
             Axios.post('http://localhost:8080/api/favourite/removeFavorite', variable, { headers: authHeader() })
                 .then(response =>{
                     if(response.data.success){
-                        setFavourited(!favourited)
-                        console.log("Removed from favourites")
-                    }else {
-                        alert('Failed to remove');
-                    }
+                        setFavourited(response.data.favourited)                      
+                           console.log("Removed from favourites")
+                       }else {
+                            alert('Failed to remove');
+                       }
                 })
 
                 //if not -  add to favourites
@@ -40,11 +40,11 @@ function FavouriteComp(props) {
             Axios.post('http://localhost:8080/api/favourite/addToFavourite', variable, { headers: authHeader() })
                 .then(response =>{
                     if(response.data.success){
-                        setFavourited(!favourited)
-                        console.log("Added to favourites")
-                    }else {
-                        alert('Failed to add');
-                    }
+                        setFavourited(response.data.favourited)                      
+                           console.log("Added to favourites")
+                       }else {
+                            alert('Failed to add');
+                       }
                 })
         }
     }
@@ -53,8 +53,8 @@ function FavouriteComp(props) {
         Axios.post('http://localhost:8080/api/favourite/favourited', variable, { headers: authHeader() }) 
             .then(response =>{
                 if(response.data.success){
-                    // setFavourited(response.data.favourited)
-                    // console.log(response.data)
+                    setFavourited(response.data.favourited)
+                    console.log(response.data)
                 }else {
                     alert('Failed to get info');
                 }

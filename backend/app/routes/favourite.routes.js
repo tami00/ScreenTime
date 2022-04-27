@@ -12,14 +12,6 @@ const Favourite = require("../models/favourite.model");
 });
 
 
-router.post("/favouriteNumber", [authJwt.verifyToken], (req, res) => {
-    Favourite.find({"movieId": req.body.movieId})
-        .exec((err, favourite) => {
-            if(err) return res.status(400).send(err)
-            res.status(200).json({success: true, favouriteNumber: favourite.length})
-        })
-})
-
 router.post("/favourited", [authJwt.verifyToken], (req, res) => {
     Favourite.find({"movieId": req.body.movieId, "userFrom": req.body.userFrom})
         .exec((err, favourite) => {

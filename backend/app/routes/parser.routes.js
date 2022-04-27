@@ -10,24 +10,20 @@ router.use(function (req, res, next) {
     next();
 });
 
-router.post('/parse', (req, res) => {
-    console.log(req.body)
-    console.log('REQ.BODY')
+router.post('/parse', async (req, res) => {
     const data = req.body.data
     const film_title = data.movieTitle
     const screening_date = data.date
 
-    async function logTimes() {
-        console.log(await getTimes(film_title, screening_date))
-        // console.log(await getTimes("Doctor Strange In The Multiverse Of Madness","2022-05-05"))
-    }
-    logTimes()
-    // const parse = await getTimes(film_title,screening_date)
-    // console.log(parse)
-    // if (req.body.hasOwnProperty('data')) {
-    // const data = req.body.data
-    // console.log('DATA ' + data)
-    // }   
+    const sendTimes = async () => {
+    const time = await getTimes(film_title, screening_date)
+    return await time
+}
+
+    res.send ({
+        sendTimes: await sendTimes(),
+        success: true
+    })
 })
 
 module.exports = router;

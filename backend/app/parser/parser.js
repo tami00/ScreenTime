@@ -41,6 +41,13 @@ async function getTimes(filmTitle,screeningDate) {
 
 module.exports = getTimes;
 
+// const sendTimes = async () => {
+//     const time = await getTimes("Jersey", "2022-04-27")
+//     return await time
+//  }
+
+//  console.log(sendTimes.time)
+
 // async function logTimes () {
 //     console.log(await getTimes("Morbius","2022-04-27"))
 //     // console.log(await getTimes("Doctor Strange In The Multiverse Of Madness","2022-05-05"))
