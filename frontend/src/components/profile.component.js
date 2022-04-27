@@ -48,20 +48,17 @@ export default class Profile extends Component {
       <div className="container">
         {(this.state.userReady) ?
         <div>
-        <header className="jumbotron">
-          <h3>
-            <strong>{currentUser.username}</strong> Profile
-          </h3>
-        </header>
+          <br></br>
         <p>
           <strong>Email:</strong>{" "}
           {currentUser.email}
         </p>
-        <strong>Authorities:</strong>
-        <ul>
-          {currentUser.roles &&
-            currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
-        </ul>
+        <strong>Username: </strong>
+        {currentUser.username}
+        <p>
+          <strong>Phone Number: </strong>
+          {currentUser.phoneNo}
+        </p>
       </div>: null}
       <Menu pointing secondary>
           <Menu.Item

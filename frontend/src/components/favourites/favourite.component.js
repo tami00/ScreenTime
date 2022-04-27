@@ -54,7 +54,7 @@ function FavouriteComp(props) {
             .then(response =>{
                 if(response.data.success){
                     // setFavourited(response.data.favourited)
-                    console.log(response.data)
+                    // console.log(response.data)
                 }else {
                     alert('Failed to get info');
                 }

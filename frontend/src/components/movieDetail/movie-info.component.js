@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Container, Container2, PosterImg, InfoColumn, MovieName, MovieInfo, Button } from "./movie-info.styles";
+import { Container, Container2, ShowTimesContainer, PosterImg, InfoColumn, MovieName, MovieInfo, Button } from "./movie-info.styles";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Reviews from "../review/reviews";
+import ShowTimes from "../showtimes/showtimes";
 import Axios from 'axios';
 import { getDetails } from "../../services/movieAPI.service";
 import FavouriteComp from "../favourites/favourite.component";
@@ -81,9 +82,12 @@ const MovieInfoComponent = () => {
         <Films />
       </div>
       <div>
-        <Container2>
+        {/* <Container2>
           <Reviews movieInfo={movieInfo} refreshFunction={updateReview} movieId={movieInfo?.id} movieTitle={movieInfo?.title} />
-        </Container2>
+        </Container2> */}
+        <ShowTimesContainer> 
+          <ShowTimes movieTitle={movieInfo?.title}/> 
+        </ShowTimesContainer>
       </div>
     </Container>
   );
