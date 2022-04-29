@@ -12,6 +12,7 @@ function UpdatePortfolio() {
 
   const [title, setTitle] = useState("");
     const [Description, setDescription] = useState("");
+    const [filePath, setFilePath] = useState("")
 
     const handleChangeTitle = (e) => {
         setTitle(e.currentTarget.value)
@@ -31,7 +32,7 @@ function UpdatePortfolio() {
       let formData = new FormData();
       const config = {
         headers: {
-                'content-type': 'multipart/form-data'}
+        'content-type': 'multipart/form-data'}
       }
       console.log(files)
       formData.append("file", files[0])
@@ -39,7 +40,21 @@ function UpdatePortfolio() {
       Axios.post('http://localhost:8080/api/portfolio/uploadVideo', formData, config)
       .then(response=> {
           if(response.data.success) {           
-              console.log(response)
+             
+            let variable = {
+                filePath: response.data.filePath,
+                fileName: response.data.fileName
+            }
+            setFilePath(response.data.filePath)
+
+            Axios.post('http://localhost:8080/api/portfolio/thumbnail')
+            .then(response => {
+                if (response.data.success) {
+
+                }else {
+                    console.log('Failed to make thumbnail')
+                }
+            })
           } else {
               alert('Failed to save video')
           }

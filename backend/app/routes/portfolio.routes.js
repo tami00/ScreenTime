@@ -2,6 +2,7 @@ const express =  require('express');
 const router = express.Router();
 const multer = require('multer')
 const {authJwt} = require("../middlewares");
+var ffmpeg = require('fluent-ffmpeg')
 
 router.use(function(req, res, next) {
       res.header(
@@ -30,7 +31,7 @@ const storage = multer.diskStorage({
   
 const upload = multer({ storage: storage }).single('file')
 
-router.post("/uploadVideo", [authJwt.verifyToken], (req, res) => {
+router.post("/uploadVideo", (req, res) => {
     
     upload(req,res,err => {
         if(err) {
@@ -40,5 +41,33 @@ router.post("/uploadVideo", [authJwt.verifyToken], (req, res) => {
     })
     
 })
+
+router.post("/thumbnail", (req, res) => {
+
+  let thumbsFilePath = "";
+  let fileDuration = "";
+
+  ffmpeg.ffprobe(req.body.filePath, function(err, media) {
+    console.dir(media)
+    console.log(media.format.duration);
+
+    fileDuration = media.format.duration;
+  })
+
+
+  ffmpeg('/path/to/video.avi')
+  .on('filenames', function(filenames) {
+    console.log('Will generate ' + filenames.join(', '))
+    thumbsFilePath = "uploads/thumbnails"
+  })
+  .on('end', function() {
+    console.log('Screenshots taken');
+    return res.json({success: true, thumbsFilePath: ,fileDuration:})
+  })
+  .screenshots({
+    // Will take screens at 20%, 40%, 60% and 80% of the video
+    count: 3,
+    folder: '/uploads/thumbnails'
+  });
 
 module.exports = router ;
