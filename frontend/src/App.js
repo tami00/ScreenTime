@@ -17,6 +17,8 @@ import Register from "./components/register.component";
 import UpdatePortfolio from "./components/portfolio/uploadPortfolio"
 import AuthService from "./services/auth.service";
 import MovieInfoComponent from "./components/movieDetail/movie-info.component";
+import UserListComponent from "./components/UserListComponent"
+import MemberUser from "./components/member-user.component";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(undefined);
@@ -113,7 +115,9 @@ const App = () => {
           <Route exact path="/profile/edit" component={EditProfile} />
           <Route exact path="/films/:title/:id" children={<MovieInfoComponent />} />
           <Route exact path="/films/:title" children={<MovieListComponent />} />
-          <Route path="/user" component={BoardUser} />
+          <Route exact path="/users/:username"children={<UserListComponent />}/>
+          <Route exact path="/user" component={BoardUser} />
+          <Route exact path="/user/:id" component={MemberUser} />
           <Route path="/portfolio" component={UpdatePortfolio} />
         </Switch>
       </div>

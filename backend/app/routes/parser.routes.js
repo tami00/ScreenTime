@@ -16,7 +16,7 @@ router.post('/parse', async (req, res) => {
     const screening_date = data.date
 
     const sendTimes = async () => {
-    const time = await getTimes(film_title, "2022-05-01")
+    const time = await getTimes(film_title, screening_date)
     return await time
 }
 

@@ -12,7 +12,6 @@ const ShowTimes = (props) => {
     // const currentUser = authService.getCurrentUser();
     const date =  moment(new Date()).format("YYYY-MM-DD")
     const [showTimesList, setShowTimesList] = useState([])
-    // const [loading, setLoading] = useState(true);
 
     const variables = {
         movieTitle: props.movieTitle,
@@ -20,15 +19,10 @@ const ShowTimes = (props) => {
     }
 
     const columns = [
-      { title: 'Cineworld Showtimes', 
-      dataIndex: 'address',
-       key: '1',
-       width: 70, },
+      { title: 'Cineworld Showtimes', dataIndex: 'address', key: '1' },
     ];
 
-    const dataSource = showTimesList.map((row) =>(row))
-
-    // console.log(showTimesList)
+    const dataSource = [{}]
 
     // const times = moment(showTimesList).format('DD-MM-YYYY HH:mm:ss')
     // console.log(showTimesList)
@@ -48,14 +42,12 @@ const ShowTimes = (props) => {
 
       return (
         <div style={{ maxWidth: '100px', margin: '2rem auto' }}>
-          {/* {loading && <div>Loading...</div>} */}
-
           {showTimesList.length === 0 ?
             <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
               <h1>There are no available showtimes at the moment</h1>
             </div> :
             <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                
+              <Table columns={columns}></Table>
             </div>
     
           }
