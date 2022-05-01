@@ -5,6 +5,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import Dropzone from 'react-dropzone';
 import authService from '../../services/auth.service';
 import validator from 'validator'
+import authHeader from '../../services/auth-header';
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -82,19 +83,20 @@ function EditProfile() {
 
         const variables = {
             userFrom: currentUser.id,
+            username: username,
             email: email,
             bio: bio,
             phoneNo:phoneNo,
             filePath: filePath
         }
 
-        Axios.post('http://localhost:8080/api/auth/update', variables)
+        Axios.post('http://localhost:8080/api/auth/update', variables, { headers: authHeader() })
             .then(response => {
                 if (response.data.success) {
                     console.log('Updated')
                     // return uploadSuccess()
                 } else {
-                    console.log('ERROR')
+                    console.log(response.error)
                     // return uploadError()
                 }
             })
@@ -111,14 +113,14 @@ function EditProfile() {
         console.log(files)
         formData.append("file", files[0])
 
-        Axios.post('http://localhost:8080/api/user/uploadFile', formData, config)
+        Axios.post('http://localhost:8080/api/uploadFile', formData, config)
             .then(response => {
                 if (response.data.success) {
-                    console.log('Saved pic')
+                    console.log('Saved picture')
                     setFilePath(response.data.filePath)
                     // console.log(response.data.fileName)
                 } else {
-                    alert('Failed to save pic')
+                    alert('Failed to save picture')
                 }
             })
 
@@ -165,7 +167,7 @@ function EditProfile() {
                     style={{ width: 160 }}
                 />
                 <br/><br/>
-            <label>Price</label>
+            <label>Phone Number</label>
             <InputNumber
                  onChange={handleChangePhoneNo}
                  value={phoneNo}

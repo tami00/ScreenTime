@@ -3,6 +3,7 @@ import { Redirect } from "react-router-dom";
 import { Menu, Dropdown } from 'semantic-ui-react';
 import SentimentComponent from "../sentiment-analysis/sentiment.component";
 import Films from "../films/films.component"
+import AuthService from "../../services/auth.service";
 import Portfolio from "../portfolio/Portfolio"
 import FutureFilms from '../films/futureFilms';
 import FavouriteContainer from '../films/favouriteContainer';
@@ -20,6 +21,7 @@ export default class OtherProfile extends Component {
     this.state = {
       redirect: null,
       activeItem: 'favourites',
+      currentUser: { username: "" },
       userReady: false,
       userDetails: []
     };
@@ -27,6 +29,8 @@ export default class OtherProfile extends Component {
 
   componentDidMount() {
     const id = this.props.id;
+    const currentUser = AuthService.getCurrentUser();
+    this.setState({currentUser: currentUser})
 
     Axios.get(`http://localhost:8080/api/getUserDetails/?id=${id}`)
     .then(response => {
@@ -37,12 +41,14 @@ export default class OtherProfile extends Component {
             alert('Error')
         }
     })
+    
 
     // console.log('OU ID',this.state.userDetails._id)
 
-    if (!id) this.setState({ redirect: "/home" });
-    this.setState({userReady: true })
+    if (!currentUser) this.setState({ redirect: "/home" });
+    this.setState({ currentUser: currentUser, userReady: true })
   }
+
 
   renderSwitch(activeItem){
     switch (activeItem) {
@@ -60,7 +66,12 @@ export default class OtherProfile extends Component {
   }
 
 
+
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+
+  onClick = (e) => {
+    this.props.history.push("/profile/edit");
+  }
 
   render() {
     if (this.state.redirect) {
@@ -68,6 +79,27 @@ export default class OtherProfile extends Component {
     }
     const { activeItem } = this.state;
     const { userDetails } = this.state;
+    const { currentUser } = this.state;
+
+    const clickHandler = () => {
+        
+        const currentID = currentUser.id;
+        const id = this.props.id;
+        
+        console.log('CURRENT ID',currentID)
+        console.log('otherUserID',id)
+    
+        Axios.put(`http://localhost:8080/api/follow/?id=${id}`,  { data: currentID }, { headers: authHeader() })
+        .then(response => {
+            if (response.data.success) {
+                console.log('FOLLOWED', response.data)
+                // this.setState({ userDetails: response.data.details })
+            } else {
+                alert('Error')
+            }
+        })
+    }
+
 
     return (
       <div className="container">
@@ -83,7 +115,7 @@ export default class OtherProfile extends Component {
               <strong>Bio: </strong>
               {userDetails.bio}
             </p>
-            {/* <button onClick={this.onClick}> EDIT </button> */}
+            <button onClick={clickHandler}> Follow </button>
           </div> : null}
         <Menu>
           <Dropdown

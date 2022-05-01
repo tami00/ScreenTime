@@ -101,20 +101,25 @@ exports.signin = (req, res) => {
     });
 };
 
-exports.update = (req, res) => {
-  const user = User.findById({id: req.body._id})
-
+exports.update = async (req, res) => {
+  const user = await User.findById(req.body.userFrom);
+  console.log(user);
+  console.log(req.body.userFrom);
   if (user) {
     user.username = req.body.username || user.username;
-    user.email = req.body.username || user.email;
-    user.phoneNo = req.body.username || user.phoneNo;
+    user.email = req.body.email || user.email;
+    user.phoneNo = req.body.phoneNo || user.phoneNo;
     user.bio = req.body.bio || user.bio;
 
     if (req.body.password) {
-      user.password=req.body.password
+      user.password = req.body.password;
     }
 
-    const updatedUser = user.save()
+    const updatedUser = user.save();
+
+    var token = jwt.sign({ id: user.id }, config.secret, {
+      expiresIn: 86400, // 24 hours
+    });
 
     res.json({
       _id: updatedUser._id,
@@ -123,11 +128,9 @@ exports.update = (req, res) => {
       phoneNo: updatedUser.phoneNo,
       bio: updatedUser.bio,
       filePath: updatedUser.filePath,
-      accessToken: token
-    })
-
-  }else {
-    res.status(404).send({ message: "User Not found." });
+      accessToken: token,
+    });
+  } else {
+    res.status(404).send({ message: 'User Not found.' });
   }
-   
 };

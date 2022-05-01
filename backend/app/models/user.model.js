@@ -8,7 +8,17 @@ const User = mongoose.model(
     password: String,
     phoneNo: String,
     bio: String,
-    filePath: String
+    filePath: String,
+    following: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    followers: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   })
 );
 

@@ -2,6 +2,8 @@ const {authJwt}  = require("../middlewares");
 const controller = require("../controllers/user.controller");
 const multer = require('multer')
 const User = require('../models/user.model');
+const { findByIdAndUpdate } = require("../models/user.model");
+const { user } = require("../models");
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -36,7 +38,7 @@ module.exports = function(app) {
 
   var upload = multer({ storage: storage }).single("file")
 
-  app.post("/uploadFile", (req, res) => {
+  app.post("/api/uploadFile", (req, res) => {
 
     upload(req, res, err => {
         if (err) {
@@ -78,6 +80,49 @@ module.exports = function(app) {
 
     res.send(user);
   });
+
+  app.put('/api/follow', async function (req, res, next){
+    const { id } = req.query;
+    const userFrom = req.body.data
+
+    console.log('OTHER USER ID',id)
+    console.log('CURRENT ID', userFrom)
+
+    User.findByIdAndUpdate(id), {
+      $push:{followers:req.body.data}
+    },{new:true},
+  (err,result)=>{
+    if(err) {
+      if(err) return res.status(400).send(err)
+    }
+    User.findByIdAndUpdate(req.body.data), {
+      $push:{following:id}
+    },{new:true}.then(result=> {
+      res.json(result)
+    }).catch(err=>{
+      return res.status(422).json({error:err})
+    })   
+  }
+  })
+
+  app.put('/api/unfollow', async function (req, res, next){
+    
+    User.findByIdAndUpdate({ unfollowID: req.body.data }), {
+      $pull:{followers:{ userFrom: req.body.data }}
+    },{new:true},
+  (err,result)=>{
+    if(err) {
+      if(err) return res.status(400).send(err)
+    }
+    User.findByIdAndUpdate({ userFrom: req.body.data }), {
+      $pull:{following:{ unfollowID: req.body.data }}
+    },{new:true}.then(result=> {
+      res.json(result)
+    }).catch(err=>{
+      return res.status(422).json({error:err})
+    })   
+  }
+  })
 
   app.get('/api/getUserDetails', async function (req, res, next) {
     const { id } = req.query;
