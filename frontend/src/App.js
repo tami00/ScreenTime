@@ -12,6 +12,7 @@ import Home from "./components/home.component";
 import Login from "./components/login.component";
 import MovieListComponent from "./components/movieDetail/movie-list.component";
 import Profile from "./components/profile.component";
+import EditProfile from "./components/profile/EditProfile";
 import Register from "./components/register.component";
 import UpdatePortfolio from "./components/portfolio/uploadPortfolio"
 import AuthService from "./services/auth.service";
@@ -56,15 +57,6 @@ const App = () => {
               Home
             </Link>
           </li>
-
-          {/* might replace for creator stuff -- discover/start campaign */}
-          {currentUser && (
-            <li className="nav-item">
-              <Link to={"/user"} className="nav-link">
-                User
-              </Link>
-            </li>
-          )}
 
           {currentUser && (
             <li className="nav-item">
@@ -118,6 +110,7 @@ const App = () => {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/profile" component={Profile} />
+          <Route exact path="/profile/edit" component={EditProfile} />
           <Route exact path="/films/:title/:id" children={<MovieInfoComponent />} />
           <Route exact path="/films/:title" children={<MovieListComponent />} />
           <Route path="/user" component={BoardUser} />

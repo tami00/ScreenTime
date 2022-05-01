@@ -2,7 +2,7 @@ const express =  require('express');
 const router = express.Router();
 const multer = require('multer')
 const {authJwt} = require("../middlewares");
-var ffmpeg = require('fluent-ffmpeg')
+const Video = require("../models/video.model")
 
 router.use(function(req, res, next) {
       res.header(
@@ -12,62 +12,59 @@ router.use(function(req, res, next) {
       next();
 });
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
       cb(null, 'uploads/')
-    },
-    filename: function (req, file, cb) {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-      cb(null, file.fieldname + '-' + uniqueSuffix)
-    },
-    fileCheck: function (req, file, cb) {
-       const type = path.extname(file.originalname)
-       if(type !== '.mp4'){
-           return cb(res.status(400).end('mp4 only'), false)
-       }
-       cb(null,true)
-    }
-  })
-  
-const upload = multer({ storage: storage }).single('file')
-
-router.post("/uploadVideo", (req, res) => {
-    
-    upload(req,res,err => {
-        if(err) {
-            return res.json({success: false, err})
-        }
-        return res.json({success:true, filePath: res.req.file.path, fileName: res.req.filename})
-    })
-    
+  },
+  filename: (req, file, cb) => {
+      cb(null, `${Date.now()}_${file.originalname}`)
+  },
+  fileFilter: (req, file, cb) => {
+      const ext = path.extname(file.originalname)
+      if (ext !== '.mp4') {
+          return cb(res.status(400).end('only jpg, png, mp4 is allowed'), false);
+      }
+      cb(null, true)
+  }
 })
 
-router.post("/thumbnail", (req, res) => {
+var upload = multer({ storage: storage }).single("file")
 
-  let thumbsFilePath = "";
-  let fileDuration = "";
+router.post("/uploadFile", (req, res) => {
 
-  ffmpeg.ffprobe(req.body.filePath, function(err, media) {
-    console.dir(media)
-    console.log(media.format.duration);
-
-    fileDuration = media.format.duration;
+  upload(req, res, err => {
+      if (err) {
+          return res.json({ success: false, err })
+      }
+      return res.json({ success: true, filePath: res.req.file.path, fileName: res.req.file.filename })
   })
 
+});
 
-  ffmpeg('/path/to/video.avi')
-  .on('filenames', function(filenames) {
-    console.log('Will generate ' + filenames.join(', '))
-    thumbsFilePath = "uploads/thumbnails"
+router.post("/uploadVideo", (req, res) => {
+
+  const video = new Video(req.body)
+
+  video.save((err, video) => {
+    if(err) return res.status(400).json({success: false. err})
+    return res.status(200).json({
+      success: true
+    })
   })
-  .on('end', function() {
-    console.log('Screenshots taken');
-    return res.json({success: true, thumbsFilePath: ,fileDuration:})
+  
+});
+
+router.post("/getVideos", (req, res) => {
+  Video.find({ userFrom: req.body.data }) 
+  .populate('userFrom')
+  .exec((err, videos) => {
+      if(err) return res.status(400).send(err)
+      res.status(200).json({success: true, videos})
   })
-  .screenshots({
-    // Will take screens at 20%, 40%, 60% and 80% of the video
-    count: 3,
-    folder: '/uploads/thumbnails'
-  });
+  
+  
+})
+
+
 
 module.exports = router ;

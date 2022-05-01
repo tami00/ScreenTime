@@ -19,6 +19,8 @@ app.use(express.urlencoded({ extended: true }));
 const db = require("./app/models");
 // const Role = db.role;
 
+app.use('/uploads', express.static('uploads'));
+
 db.mongoose
   .connect(`mongodb+srv://tami00:MEUxClWqUNbLz359@cluster0.gmvao.mongodb.net/test?retryWrites=true&w=majority`, {
     useNewUrlParser: true,

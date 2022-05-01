@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const Review = mongoose.model(
   "Review",
@@ -11,15 +11,13 @@ const Review = mongoose.model(
     author: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-      }
+        ref: "User",
+      },
     ],
-    reponseTo: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User"
-        },
-    ]
+    responseTo: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Review",
+    },
   })
 );
 

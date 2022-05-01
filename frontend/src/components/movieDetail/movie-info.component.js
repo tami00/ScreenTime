@@ -10,6 +10,7 @@ import FavouriteComp from "../favourites/favourite.component";
 import Films from "../films/films.component";
 import authHeader from '../../services/auth-header';
 import authService from '../../services/auth.service';
+import FutureFilmsComponent from "../films/FutureFilmsComponent";
 
 const MovieInfoComponent = () => {
   const [movieInfo, setMovieInfo] = useState();
@@ -26,21 +27,21 @@ const MovieInfoComponent = () => {
     movieDate: movieInfo?.release_date
   }
 
-  const AddButton = styled.button`
-  height: 30px;
-  width: 40px;
-`;
+//   const AddButton = styled.button`
+//   height: 30px;
+//   width: 40px;
+// `;
 
-  const onClick = () => {
-    Axios.post('http://localhost:8080/api/futureFilms/addToFutureFilms', variable, { headers: authHeader() })
-      .then(response => {
-        if (response.data.success) {
-          console.log("Added", response.data)
-        } else {
-          alert('Failed to add');
-        }
-      })
-  }
+//   const onClick = () => {
+//     Axios.post('http://localhost:8080/api/futureFilms/addToFutureFilms', variable, { headers: authHeader() })
+//       .then(response => {
+//         if (response.data.success) {
+//           console.log("Added", response.data)
+//         } else {
+//           alert('Failed to add');
+//         }
+//       })
+//   }
 
   useEffect(() => {
 
@@ -75,19 +76,18 @@ const MovieInfoComponent = () => {
         </MovieInfo>
       </InfoColumn>
       <div>
-        <FavouriteComp movieInfo={movieInfo} />
+        {movieInfo !== undefined && <FavouriteComp movieInfo={movieInfo} />}
       </div>
       <div>
-        <AddButton onClick={onClick}/>
-        <Films />
+      {movieInfo !== undefined && <FutureFilmsComponent movieInfo={movieInfo} />}
       </div>
       <div>
-        {/* <Container2>
+        <Container2>
           <Reviews movieInfo={movieInfo} refreshFunction={updateReview} movieId={movieInfo?.id} movieTitle={movieInfo?.title} />
-        </Container2> */}
-        <ShowTimesContainer> 
+        </Container2>
+        {/* <ShowTimesContainer> 
           <ShowTimes movieTitle={movieInfo?.title}/> 
-        </ShowTimesContainer>
+        </ShowTimesContainer> */}
       </div>
     </Container>
   );

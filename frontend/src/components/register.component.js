@@ -37,13 +37,22 @@ const vusername = value => {
 };
 
 const vphoneNo = value => {
-  if (value.length < 10 || value.length > 10) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        Please enter a valid phone number
-      </div>
-    );
-  }
+  // if (value.length < 10 || value.length > 10) {
+  //   return (
+  //     <div className="alert alert-danger" role="alert">
+  //       Please enter a valid phone number
+  //     </div>
+  //   );
+  // }
+
+  // if (!value.startsWith('08')) {
+  //   return (
+  //     <div className="alert alert-danger" role="alert">
+  //       Please enter an Irish phone number
+  //     </div>
+  //   );
+  //}
+
 };
 
 const vpassword = value => {

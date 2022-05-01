@@ -1,9 +1,15 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
 import AuthService from "../services/auth.service";
-import { Menu } from 'semantic-ui-react';
+import { Menu, Dropdown } from 'semantic-ui-react';
 import SentimentComponent from "./sentiment-analysis/sentiment.component";
 import Films from "./films/films.component"
+import Portfolio from "../components/portfolio/Portfolio"
+import FutureFilms from '../components/films/futureFilms';
+import FavouriteContainer from '../components/films/favouriteContainer';
+import { Avatar } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+
 export default class Profile extends Component {
   constructor(props) {
     super(props);
@@ -11,7 +17,8 @@ export default class Profile extends Component {
     this.state = {
       redirect: null,
       userReady: false,
-      currentUser: { username: "" }
+      currentUser: { username: "" },
+      activeItem: 'favourites'
     };
   }
 
@@ -22,16 +29,25 @@ export default class Profile extends Component {
     this.setState({ currentUser: currentUser, userReady: true })
   }
 
-  state = { activeItem: 'films' }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
+  onClick = (e) => {
+    this.props.history.push("/profile/edit");
+  }
+
   renderSwitch(activeItem) {
-    switch(activeItem) {
+    switch (activeItem) {
       case 'reviews':
-        return <SentimentComponent/>;
+        return <SentimentComponent />;
       case 'films':
-        return <Films/>;
+        return <Films />;
+      case 'portfolio':
+        return <Portfolio />;
+      case 'favourites':
+        return <FavouriteContainer />;
+      case 'futurefilms':
+        return <FutureFilms />;
     }
   }
 
@@ -47,25 +63,40 @@ export default class Profile extends Component {
     return (
       <div className="container">
         {(this.state.userReady) ?
-        <div>
-          <br></br>
-        <p>
-          <strong>Email:</strong>{" "}
-          {currentUser.email}
-        </p>
-        <strong>Username: </strong>
-        {currentUser.username}
-        <p>
-          <strong>Phone Number: </strong>
-          {currentUser.phoneNo}
-        </p>
-      </div>: null}
-      <Menu pointing secondary>
-          <Menu.Item
-            name='films'
-            active={activeItem === 'films'}
-            onClick={this.handleItemClick}
-          />
+          <div>
+            <br></br>
+            <Avatar size={180} icon={<UserOutlined />}/>
+            <p>
+              <strong>Email:</strong>{" "}
+              {currentUser.email}
+            </p>
+            <strong>Username: </strong>
+            {currentUser.username}
+            <p>
+              <button onClick={this.onClick}> EDIT </button>
+              {/* <strong>Phone Number: </strong>
+              {currentUser.phoneNo} */}
+            </p>
+          </div> : null}
+        <Menu>
+          <Dropdown
+            item text='Films'
+            name='films'>
+            <Dropdown.Menu>
+            <Dropdown.Item
+                name="favourites"
+                active={activeItem === 'favourites'}
+                onClick={this.handleItemClick}>
+                Favourites
+              </Dropdown.Item>
+              <Dropdown.Item
+                name="futurefilms"
+                active={activeItem === 'futurefilms'}
+                onClick={this.handleItemClick}>
+                Future Films
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
           <Menu.Item
             name='reviews'
             active={activeItem === 'reviews'}

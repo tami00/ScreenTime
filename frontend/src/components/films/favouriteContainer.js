@@ -5,13 +5,19 @@ import FavouriteCard from "./favouriteCard";
 import Axios from "axios";
 import authService from '../../services/auth.service'
 import authHeader from '../../services/auth-header';
-import { Layout } from 'antd'
-import { Content } from "antd/lib/layout/layout";
+import { Col, Row  } from 'antd'
 
 
 const FavouriteContainer = () => {
     const currentUser = authService.getCurrentUser();
     const [favouriteList, setFavouriteList] = useState([])
+    const [visible, setVisible] = useState(3)
+    // const [maxValue, setMaxValue] = useState()
+
+
+    const handleChange = (value) => {
+       setVisible((prevValue) => prevValue + 3)
+    }
 
     useEffect(() => {
         Axios.post('http://localhost:8080/api/favourite/getFavourites', { data: currentUser.id }, { headers: authHeader() })
@@ -25,16 +31,30 @@ const FavouriteContainer = () => {
             })
     },[])
 
+    const displayCards = favouriteList && favouriteList.slice(0, visible).map((films, index) => {
+        return (
+        <Col lg={6} md={8} xs={24}>
+        <FavouriteCard key={index} films={films}/>
+        </Col>
+        )
+    })
+
   return (
-        <Layout>
-            <Content>
-                <div>
-                    {favouriteList && favouriteList.map((films, index) => 
-                        <FavouriteCard key={index} films={films}/>
-                    )}
-                </div>
-            </Content>
-        </Layout>
+    <div style={{ maxWidth: '2000px', margin: '2rem auto' }}>              
+        {favouriteList.length === 0 ?
+         <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
+         <h2>Add movies to your favourites</h2>
+     </div> :
+     <div>
+         <Row gutter={[16, 16]}>
+             {displayCards}          
+         </Row>
+         <button onClick={handleChange}>Load</button>
+     </div>
+        
+    }
+             
+    </div>
     )
 }
 

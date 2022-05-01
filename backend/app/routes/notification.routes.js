@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const messagebird = require('messagebird')('HWrwY0QM7uZ7qk3SDobPO25ms');
+const messagebird = require('messagebird')('Wbfs6oQIN1q2ME7D9QRq92Hha');
 const moment = require('moment');
 const { authJwt } = require("../middlewares");
 
@@ -20,6 +20,7 @@ router.post("/notifications", [authJwt.verifyToken], (req, res) => {
 
     result.forEach(function (item) {
         const movieDate = item.movieDate;
+        // console.log(movieDate)
         const userFrom = item.userFrom;
         const title = item.movieTitle;
         var earliestPossibleDT = moment().add(1,'days');;
@@ -60,9 +61,9 @@ router.post("/notifications", [authJwt.verifyToken], (req, res) => {
                         }
                         else {
                             //schedule reminder week before release
-                            // var reminderDT = releaseDT.clone().subtract(1, 'days');
-                            var reminderDT = moment().add(5, 'minutes')
-                            console.log(reminderDT)
+                            var reminderDT = releaseDT.clone().subtract(1, 'days');
+                            var reminderDT = moment().add(7, 'days')
+                            // console.log(reminderDT)
 
                             messagebird.messages.create({
                                 originator : "Movie App",
@@ -91,17 +92,14 @@ router.post("/notifications", [authJwt.verifyToken], (req, res) => {
     });
 })
 
-// router.get("/test", (req,res) => {
-//     messagebird.lookup.read('12233333', function (err, response) {
-//         if (err) {
-//           return console.log(err);
-//         }
-//         //  var reminderDT = moment().add(5, 'minutes')
-//         //  console.log(reminderDT)
-
-
-//       });
-// })
+router.get("/test", (req,res) => {
+    messagebird.lookup.read('+3530877611348', function (err, response) {
+        if (err) {
+          return console.log(err);
+        }
+            console.log('OK')
+      });
+})
 
 router.get("/testSMS/:phone", (req,res) => {
     const { phone } = req.params;
@@ -120,11 +118,9 @@ router.get("/testSMS/:phone", (req,res) => {
            console.log(err);
        } else {
            console.log("SUCCESS:");
-           console.log(response.recipients);
+           console.log(response.recipients.recipient);
        }
     });
 })
-
-
 
 module.exports = router;

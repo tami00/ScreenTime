@@ -5,13 +5,28 @@ import { Container } from 'semantic-ui-react';
 import authService from '../../services/auth.service'
 import authHeader from '../../services/auth-header';
 import Axios from 'axios';
-import { Card, Avatar, Space } from 'antd';
+import { Card, Avatar, Space, Pagination } from 'antd';
 
 const { Meta } = Card;
+
+
+//pagination on 2nd
 
 const SentimentComponent = (props) => {
   const currentUser = authService.getCurrentUser();
   const [reviewList, setReviewList] = useState([]);
+  const [minValue, setMinValue] = useState(0)
+  const [maxValue, setMaxValue] = useState(4)
+
+  const handleChange = (value) => {
+    if (value <= 1) {
+      setMinValue(0)
+      setMaxValue(4)
+    }else {
+      setMinValue(maxValue)
+      setMaxValue(value * 4)
+    }
+ }
 
   // console.log(currentUser.id)
 
@@ -30,9 +45,14 @@ const SentimentComponent = (props) => {
 
 
   return (
-    <Container>
-      <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-        {reviewList && reviewList.map((review, index) => {
+       <div style={{ maxWidth: '2000px', margin: '2rem auto' }}> 
+       {reviewList.length === 0 ?            
+        <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
+        <h2>Leave a review on a movie</h2>
+    </div> :
+    <div>
+       <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+        {reviewList && reviewList.slice(minValue, maxValue).map((review, index) => {
           return <Card key={index} review={review} style={{ width: 700 }}>
             <Meta
               avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
@@ -62,13 +82,17 @@ const SentimentComponent = (props) => {
           </Card>
         })}
       </Space>
-    </Container>
+      <Pagination
+          simple defaultCurrent={1}
+          defaultPageSize={4}
+          onChange={handleChange}
+          total={reviewList.length}
+        />
+    </div>
+      }
+     
+    </div>
   )
 }
 
 export default SentimentComponent;
-
-//{reviewList && reviewList.length > 0 ? reviewList.map((review, index) =>
-//<Row key = {index} review = {review}/>) : "You have no reviews"}
-// {reviewList.map((review,index) =>{
-//   <Card key = {index} style = {{width: 700}}

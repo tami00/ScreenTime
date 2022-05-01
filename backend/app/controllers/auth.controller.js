@@ -11,7 +11,8 @@ exports.signup = (req, res) => {
   const user = new User({
     username: req.body.username,
     email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 8)
+    password: bcrypt.hashSync(req.body.password, 8),
+    phoneNo: req.body.phoneNo
   });
 
   user.save((err, user) => {
@@ -98,4 +99,35 @@ exports.signin = (req, res) => {
         accessToken: token
       });
     });
+};
+
+exports.update = (req, res) => {
+  const user = User.findById({id: req.body._id})
+
+  if (user) {
+    user.username = req.body.username || user.username;
+    user.email = req.body.username || user.email;
+    user.phoneNo = req.body.username || user.phoneNo;
+    user.bio = req.body.bio || user.bio;
+
+    if (req.body.password) {
+      user.password=req.body.password
+    }
+
+    const updatedUser = User.save()
+
+    res.json({
+      _id: updatedUser._id,
+      username: updatedUser.username,
+      email: updatedUser.email,
+      phoneNo: updatedUser.phoneNo,
+      bio: updatedUser.bio,
+      filePath: updatedUser.filePath,
+      accessToken: token
+    })
+
+  }else {
+    res.status(404).send({ message: "User Not found." });
+  }
+   
 };

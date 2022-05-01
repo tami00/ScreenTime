@@ -8,6 +8,7 @@ import Carousel from "react-elastic-carousel"
 import HeroImage from "./heroImage";
 import Rows from "./rows";
 import Poster from "./poster";
+import { useHistory } from "react-router-dom";// services
 
 const HomeComponent = () => {
   const [popularMovieInfo, setPopularMovieInfo] = useState();
@@ -52,6 +53,7 @@ const HomeComponent = () => {
               : 'No image'
             }
             movieId={popularMovieInfo.id}
+            movieTitle={popularMovieInfo.title}
             />
         ))}
       </Rows>
