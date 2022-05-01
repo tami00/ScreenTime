@@ -25,9 +25,7 @@ function FavouriteComp(props) {
     //if user already likes the film - remove it
     if (favourited) {
       Axios.post(
-        "http://localhost:8080/api/favourite/removeFavorite",
-        variable,
-        { headers: authHeader() }
+        "http://localhost:8080/api/favourite/removeFavorite", variable, { headers: authHeader() }
       ).then((response) => {
         if (response.data.success) {
           setFavourited(response.data.favourited);
@@ -40,9 +38,7 @@ function FavouriteComp(props) {
       //if not -  add to favourites
     } else {
       Axios.post(
-        "http://localhost:8080/api/favourite/addToFavourite",
-        variable,
-        { headers: authHeader() }
+        "http://localhost:8080/api/favourite/addToFavourite", variable, { headers: authHeader() }
       ).then((response) => {
         if (response.data.success) {
           setFavourited(response.data.favourited);
