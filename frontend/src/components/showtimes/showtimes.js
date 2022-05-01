@@ -12,6 +12,7 @@ const ShowTimes = (props) => {
     // const currentUser = authService.getCurrentUser();
     const date =  moment(new Date()).format("YYYY-MM-DD")
     const [showTimesList, setShowTimesList] = useState([])
+    const [dataSource, setDataSource] = useState();
 
     const variables = {
         movieTitle: props.movieTitle,
@@ -22,10 +23,7 @@ const ShowTimes = (props) => {
       { title: 'Cineworld Showtimes', dataIndex: 'address', key: '1' },
     ];
 
-    const dataSource = [{}]
-
     // const times = moment(showTimesList).format('DD-MM-YYYY HH:mm:ss')
-    // console.log(showTimesList)
 
       useEffect(() => {
         if (!props.movieTitle) return;
@@ -47,7 +45,6 @@ const ShowTimes = (props) => {
               <h1>There are no available showtimes at the moment</h1>
             </div> :
             <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-              <Table columns={columns}></Table>
             </div>
     
           }

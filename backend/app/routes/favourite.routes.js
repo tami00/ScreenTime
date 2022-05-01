@@ -54,5 +54,14 @@ router.post("/getFavourites", [authJwt.verifyToken], (req, res) => {
       res.status(200).json({ success: true, films });
     });
 });
+
+router.post("/getOtherUserFavourites", [authJwt.verifyToken], (req, res) => {
+  Favourite.find({ userFrom: req.body.data })
+    .populate("userFrom")
+    .exec((err, films) => {
+      if (err) return res.status(400).send(err);
+      res.status(200).json({ success: true, films });
+    });
+});
 module.exports = router;
 

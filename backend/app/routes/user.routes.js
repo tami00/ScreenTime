@@ -78,4 +78,14 @@ module.exports = function(app) {
 
     res.send(user);
   });
+
+  app.get('/api/getUserDetails', async function (req, res, next) {
+    const { id } = req.query;
+    User.findById(id)
+    .exec((err, details) => {
+        if(err) return res.status(400).send(err)
+        res.status(200).json({success: true, details})
+    })
+  });
 };
+

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom'; // services
 import authHeader from '../services/auth-header';
 import Axios from 'axios';
+import OtherProfile from './profile/OtherProfile'
 
 const UserListContainer = styled.div`
   display: flex;
@@ -44,11 +45,7 @@ const MemberUser = (props) => {
     >
       {loading && <div>Loading...</div>}
       {!loading && user && (
-        <div className="container">
-          <header className="jumbotron">
-            <h3>{user.username}</h3>
-          </header>
-        </div>
+      <OtherProfile id={id}/>
       )}
       {!loading && !user && <div>No users exist with that id!</div>}
     </UserListContainer>

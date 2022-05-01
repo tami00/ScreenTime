@@ -86,6 +86,7 @@ const Reviews = (props) => {
                   parentReviewId={review._id}
                   refreshFunction={props.refreshFunction}
                   handleRefresh={handleReload}
+                  isNested={true}
                 />
               </React.Fragment>
             )

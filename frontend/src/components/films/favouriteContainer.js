@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation } from 'react-router-dom'; // services
 import styled from "styled-components";
 import FavouriteCard from "./favouriteCard";
 import Axios from "axios";
@@ -8,8 +8,19 @@ import authHeader from '../../services/auth-header';
 import { Col, Row  } from 'antd'
 
 
-const FavouriteContainer = () => {
+const FavouriteContainer = (props) => {
     const currentUser = authService.getCurrentUser();
+
+    const id = props.userID;
+
+    const url = window.location.href 
+    
+    // if (url.indexOf(id)) {
+    //     console.log('OK')
+    // }
+
+    // console.log('OUID',otherUserID)
+
     const [favouriteList, setFavouriteList] = useState([])
     const [visible, setVisible] = useState(3)
     // const [maxValue, setMaxValue] = useState()
@@ -18,6 +29,21 @@ const FavouriteContainer = () => {
     const handleChange = (value) => {
        setVisible((prevValue) => prevValue + 3)
     }
+
+    useEffect(() => {
+        if(!props.userID) return;
+        Axios.post('http://localhost:8080/api/favourite/getOtherUserFavourites', { data: id }, { headers: authHeader() })
+            .then(response => {
+                if (response.data.success) {
+                    console.log('Others Users Favourite Films', response.data)
+                    //setFavouriteList(response.data.films)
+                } else {
+                    alert('Error')
+                }
+            })
+    },[props])
+
+    
 
     useEffect(() => {
         Axios.post('http://localhost:8080/api/favourite/getFavourites', { data: currentUser.id }, { headers: authHeader() })

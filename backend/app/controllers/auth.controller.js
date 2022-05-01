@@ -114,7 +114,7 @@ exports.update = (req, res) => {
       user.password=req.body.password
     }
 
-    const updatedUser = User.save()
+    const updatedUser = user.save()
 
     res.json({
       _id: updatedUser._id,
