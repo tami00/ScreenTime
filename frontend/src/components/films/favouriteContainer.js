@@ -14,14 +14,18 @@ const FavouriteContainer = (props) => {
     const id = props.userID;
 
     const url = window.location.href 
-    
-    // if (url.indexOf(id)) {
+
+    // if (url.indexOf(id) > -1) {
     //     console.log('OK')
+    // }
+    // else {
+    //     console.log('NO')
     // }
 
     // console.log('OUID',otherUserID)
 
     const [favouriteList, setFavouriteList] = useState([])
+    const [otherFavouriteList, otherSetFavouriteList] = useState([])
     const [visible, setVisible] = useState(3)
     // const [maxValue, setMaxValue] = useState()
 
@@ -36,7 +40,7 @@ const FavouriteContainer = (props) => {
             .then(response => {
                 if (response.data.success) {
                     console.log('Others Users Favourite Films', response.data)
-                    //setFavouriteList(response.data.films)
+                    otherSetFavouriteList(response.data.films)
                 } else {
                     alert('Error')
                 }
@@ -57,6 +61,14 @@ const FavouriteContainer = (props) => {
             })
     },[])
 
+    const otherUserDisplayCards = otherFavouriteList && otherFavouriteList.slice(0, visible).map((films, index) => {
+        return (
+        <Col lg={6} md={8} xs={24}>
+        <FavouriteCard key={index} films={films}/>
+        </Col>
+        )
+    })
+
     const displayCards = favouriteList && favouriteList.slice(0, visible).map((films, index) => {
         return (
         <Col lg={6} md={8} xs={24}>
@@ -65,8 +77,89 @@ const FavouriteContainer = (props) => {
         )
     })
 
+    function render (){
+        if(url.indexOf(id) > 1) {
+            if(otherFavouriteList.length === 0){
+                return (
+                   <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
+                    <h2>User does not have any favourites added</h2>
+                   </div> 
+                )
+            } else {
+                return (
+                <div>
+                <Row gutter={[16, 16]}>
+                {otherUserDisplayCards} 
+                </Row>
+                <button onClick={handleChange}>Load</button>
+                </div>
+                )
+            }
+        }else if (url.indexOf('profile') > 1) {
+            if (favouriteList.length === 0){
+            return (
+                <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
+                 <h2>Add movies to your favourites</h2>
+                </div> 
+             )
+            } else {
+                return (
+                <div>
+                    <Row gutter={[16, 16]}>
+                    {displayCards} 
+                    </Row>
+                    <button onClick={handleChange}>Load</button>
+                    </div>
+                )
+            }
+        } 
+    }
+
   return (
-    <div style={{ maxWidth: '2000px', margin: '2rem auto' }}>              
+    <div style={{ maxWidth: '2000px', margin: '2rem auto' }}>  
+    { render()}
+        {/* {(() =>{
+            if(url.indexOf(id)) {
+                if(otherFavouriteList.length === 0){
+                    return (
+                       <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
+                        <h2>User does not have any favourites added</h2>
+                       </div> 
+                    )
+                } else {
+                    return (
+                    <div>
+                    <Row gutter={[16, 16]}>
+                    {otherUserDisplayCards} 
+                    </Row>
+                    <button onClick={handleChange}>Load</button>
+                    </div>
+                    )
+                }
+            }else if (favouriteList.length === 0){
+                return (
+                    <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
+                     <h2>Add movies to your favourites</h2>
+                    </div> 
+                 )
+            } else {
+                return (
+                <div>
+                    <Row gutter={[16, 16]}>
+                    {displayCards} 
+                    </Row>
+                    <button onClick={handleChange}>Load</button>
+                    </div>
+                )
+            }
+        })} */}
+
+        {/* {(url.indexOf(id)) 
+        
+        :
+        
+        
+        }            
         {favouriteList.length === 0 ?
          <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
          <h2>Add movies to your favourites</h2>
@@ -78,7 +171,7 @@ const FavouriteContainer = (props) => {
          <button onClick={handleChange}>Load</button>
      </div>
         
-    }
+    } */}
              
     </div>
     )

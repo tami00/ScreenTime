@@ -4,7 +4,7 @@ import { Menu, Dropdown } from 'semantic-ui-react';
 import SentimentComponent from "../sentiment-analysis/sentiment.component";
 import Films from "../films/films.component"
 import Portfolio from "../portfolio/Portfolio"
-import FutureFilms from '../films/FutureFilmsComponent';
+import FutureFilms from '../films/futureFilms';
 import FavouriteContainer from '../films/favouriteContainer';
 import { Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
@@ -47,15 +47,15 @@ export default class OtherProfile extends Component {
   renderSwitch(activeItem){
     switch (activeItem) {
       case 'reviews':
-        return <SentimentComponent />;
+        return <SentimentComponent userID={this.state.userDetails._id}/>;
       case 'films':
         return <Films />;
       case 'portfolio':
-        return <Portfolio />;
+        return <Portfolio userID={this.state.userDetails._id}/>;
       case 'favourites':
         return <FavouriteContainer userID={this.state.userDetails._id}/>;
       case 'futurefilms':
-        return <FutureFilms />;
+        return <FutureFilms userID={this.state.userDetails._id}/>;
     }
   }
 

@@ -83,12 +83,12 @@ const MovieInfoComponent = () => {
       {movieInfo !== undefined && <FutureFilmsComponent movieInfo={movieInfo} />}
       </div>
       <div>
-        {/* <Container2>
+        <Container2>
         <Reviews refreshFunction={updateReview} reviewList={reviewList} movieId={movieInfo?.id} movieTitle={movieInfo?.title} />
-        </Container2> */}
-        <ShowTimesContainer> 
+        </Container2>
+        {/* <ShowTimesContainer> 
           <ShowTimes movieTitle={movieInfo?.title}/> 
-        </ShowTimesContainer>
+        </ShowTimesContainer> */}
       </div>
     </Container>
   );

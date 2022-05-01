@@ -65,6 +65,17 @@ router.post("/getVideos", (req, res) => {
   
 })
 
+router.post("/getUserOtherVideos", (req, res) => {
+  Video.find({ userFrom: req.body.data }) 
+  .populate('userFrom')
+  .exec((err, videos) => {
+      if(err) return res.status(400).send(err)
+      res.status(200).json({success: true, videos})
+  })
+  
+  
+})
+
 
 
 module.exports = router ;

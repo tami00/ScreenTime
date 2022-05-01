@@ -7,9 +7,14 @@ import SentimentComponent from '../sentiment-analysis/sentiment.component';
 
 const { Title } = Typography;
 
-function Portfolio() {
+function Portfolio(props) {
   const currentUser = authService.getCurrentUser();
   const [videoDetails, setVideoDetails] = useState([])
+  const [otherVideoDetails, otherSetVideoDetails] = useState([])
+
+  const id = props.userID;
+
+    const url = window.location.href 
 
   useEffect(() => {
     axios.post('http://localhost:8080/api/portfolio/getVideos', { data: currentUser.id })
@@ -23,9 +28,58 @@ function Portfolio() {
       })
   }, [])
 
+  useEffect(() => {
+    axios.post('http://localhost:8080/api/portfolio/getUserOtherVideos', { data: id })
+      .then(response => {
+        if (response.data.success) {
+          console.log('OTHER YSER VIDEO DETAILS:', response.data.videos)
+          otherSetVideoDetails(response.data.videos)
+        } else {
+          alert('Error')
+        }
+      })
+  }, [])
+
+  function render (){
+    if(url.indexOf(id) > 1) {
+        if(otherVideoDetails.length === 0){
+            return (
+               <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
+                <h2>User does not have any videos added</h2>
+               </div> 
+            )
+        } else {
+            return (
+              <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+              {otherVideoDetails.map((video, index) => (
+                <VideoPlayer key={index} video={video} />
+              ))}
+            </div>
+            )
+        }
+    }else if (url.indexOf('profile') > 1) {
+        if (videoDetails.length === 0){
+        return (
+            <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
+            <h2>Upload to your portfolio</h2>
+            </div> 
+         )
+        } else {
+            return (
+              <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+              {videoDetails.map((video, index) => (
+                <VideoPlayer key={index} video={video} />
+              ))}
+            </div>
+            )
+        }
+    } 
+  }
+  
+
   return (
     <div style={{ maxWidth: '1000px', margin: '2rem auto' }}>
-      {videoDetails.length === 0 ?
+      {/* {videoDetails.length === 0 ?
         <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
           <h2>Upload to your portfolio</h2>
         </div> :
@@ -35,7 +89,8 @@ function Portfolio() {
           ))}
         </div>
 
-      }
+      } */}
+      {render()}
 
     </div>
   )

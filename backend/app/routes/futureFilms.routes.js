@@ -61,4 +61,15 @@ router.post("/getFutureFilms", [authJwt.verifyToken], (req, res) => {
     
 })
 
+router.post("/getOtherFutureFilms", [authJwt.verifyToken], (req, res) => {
+  FutureFilms.find({ userFrom: req.body.data }) 
+  .populate('userFrom')
+  .exec((err, films) => {
+      if(err) return res.status(400).send(err)
+      res.status(200).json({success: true, films})
+  })
+  
+  
+})
+
 module.exports = router;
