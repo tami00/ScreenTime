@@ -24,7 +24,8 @@ app.use('/uploads', express.static('uploads'));
 db.mongoose
   .connect(`mongodb+srv://tami00:MEUxClWqUNbLz359@cluster0.gmvao.mongodb.net/test?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false 
   })
   .then(() => {
     console.log("Successfully connect to MongoDB.");

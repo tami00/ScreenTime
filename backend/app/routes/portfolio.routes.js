@@ -55,7 +55,6 @@ router.post("/uploadVideo", (req, res) => {
 });
 
 router.post("/deleteVideo", (req, res) => {
-  console.log(req.body.data)
   Video.findOneAndDelete(req.body.data)
   .exec((err, video) => {
     if (err) return res.status(400).json({success: false. err})

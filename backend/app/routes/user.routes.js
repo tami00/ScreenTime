@@ -81,48 +81,96 @@ module.exports = function(app) {
     res.send(user);
   });
 
-  app.put('/api/follow', async function (req, res, next){
-    const { id } = req.query;
+  // app.put('/api/follow', async function (req, res, next){
+  //   const { id } = req.query;
+  //   const userFrom = req.body.data
+
+  //   console.log('OTHER USER ID',id)
+  //   console.log('CURRENT ID', userFrom)
+
+  //   User.findByIdAndUpdate(id, {
+  //     $push:{followers:req.body.data}
+  //   },{new:true}),
+  // (err,result)=>{
+  //   if(err) {
+  //     if(err) return res.status(400).send(err)
+  //   }
+  //   User.findByIdAndUpdate(req.body.data, {
+  //     $push:{following:id}
+  //   },{new:true}).then(result=> {
+  //     res.json(result)
+  //   }).catch(err=>{
+  //     return res.status(422).json({error:err})
+  //   })   
+  // }
+  // })
+
+  app.put('/api/follow',(req,res)=>{
+        const { id } = req.query;
     const userFrom = req.body.data
 
-    console.log('OTHER USER ID',id)
-    console.log('CURRENT ID', userFrom)
+    User.findByIdAndUpdate(id,{
+        $push:{followers:userFrom}
+    },{
+        new:true
+    },(err,result)=>{
+        if(err){
+            return res.status(422).json({error:err})
+        }
+      User.findByIdAndUpdate(userFrom,{
+          $push:{following:id}
+          
+      },{new:true}).then(result=>{
+          res.json(result)
+      }).catch(err=>{
+          return res.status(422).json({error:err})
+      })
 
-    User.findByIdAndUpdate(id), {
-      $push:{followers:req.body.data}
-    },{new:true},
-  (err,result)=>{
-    if(err) {
-      if(err) return res.status(400).send(err)
     }
-    User.findByIdAndUpdate(req.body.data), {
-      $push:{following:id}
-    },{new:true}.then(result=> {
-      res.json(result)
-    }).catch(err=>{
-      return res.status(422).json({error:err})
-    })   
-  }
-  })
+    )
+})
 
-  app.put('/api/unfollow', async function (req, res, next){
-    
-    User.findByIdAndUpdate({ unfollowID: req.body.data }), {
-      $pull:{followers:{ userFrom: req.body.data }}
-    },{new:true},
-  (err,result)=>{
-    if(err) {
-      if(err) return res.status(400).send(err)
-    }
-    User.findByIdAndUpdate({ userFrom: req.body.data }), {
-      $pull:{following:{ unfollowID: req.body.data }}
-    },{new:true}.then(result=> {
-      res.json(result)
+// app.post("/following", (req, res) => {
+//   // const { id } = req.query;
+//   // const userFrom = req.body.data
+
+//   User.find({id:req.body.id ,userFrom:req.body.userFrom
+//   }).exec((err, following) => {
+//     if (err) return res.status(400).send(err);
+//     console.log(following.length);
+//     let result = false;
+//     if (following.length !== 0) {
+//       result = true;
+//     }
+
+//     res.status(200).json({ success: true, favourited: result });
+//   });
+// });
+
+app.put('/api/unfollow',(req,res)=>{
+  const { id } = req.query;
+  const userFrom = req.body.data
+
+  User.findByIdAndUpdate(id,{
+      $pull:{followers:userFrom}
+  },{
+      new:true
+  },(err,result)=>{
+      if(err){
+          return res.status(422).json({error:err})
+      }
+    User.findByIdAndUpdate(userFrom,{
+        $pull:{following:id}
+        
+    },{new:true}).select("-password").then(result=>{
+        res.json(result)
     }).catch(err=>{
-      return res.status(422).json({error:err})
-    })   
+        return res.status(422).json({error:err})
+    })
+
   }
-  })
+  )
+})
 
   app.get('/api/getUserDetails', async function (req, res, next) {
     const { id } = req.query;

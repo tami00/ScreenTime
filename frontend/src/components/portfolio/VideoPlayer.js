@@ -10,7 +10,7 @@ function VideoPlayer(props) {
   const [videoUrl, setVideoUrl] = useState('');
   console.log(props);
 
-  console.log('CURRENT ID',currentUser.id)
+  console.log('CURRENT ',currentUser.id)
 
   useEffect(() => {
     const newFilePath = filePath.replace('//', '/');

@@ -3,8 +3,11 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
+import GoogleLogin from 'react-google-login'
+import authHeader from  '../services/auth-header'
 
 import AuthService from "../services/auth.service";
+import Axios from "axios";
 
 const required = value => {
   if (!value) {
@@ -148,7 +151,28 @@ export default class Register extends Component {
     }
   }
 
+  handleLogin = (googleData) => {
+    console.log(googleData)
+    const tokenId = googleData.tokenId
+    console.log(tokenId)
+
+    Axios.post('http://localhost:8080/api/auth/googleLogin', {data: tokenId})
+    .then(response => {
+          console.log('GOOGLE LOGIN SUCCESS', response)
+          // this.setState({ userDetails: response.data.details })
+  })
+  }
+
+  handleFailure = (googleData) => {
+    alert(googleData)
+  }
+
+
+
+
   render() {
+  
+    // console.log('ENV',process.env.REACT_APP_CLIENT_KEY)
     return (
       <div className="col-md-12">
         <div className="card card-container">
@@ -157,6 +181,12 @@ export default class Register extends Component {
             alt="profile-img"
             className="profile-img-card"
           />
+          <GoogleLogin 
+            clientId={process.env.REACT_APP_CLIENT_KEY}
+            buttonText="Login with Google"
+            onSuccess={this.handleLogin}
+            onFailure={this.handleFailure}>
+          </GoogleLogin>
 
           <Form
             onSubmit={this.handleRegister}

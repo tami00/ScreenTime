@@ -48,6 +48,8 @@ export default class Profile extends Component {
         return <FavouriteContainer />;
       case 'futurefilms':
         return <FutureFilms />;
+        case 'activity':
+          return;
     }
   }
 
@@ -108,8 +110,8 @@ export default class Profile extends Component {
             onClick={this.handleItemClick}
           />
           <Menu.Item
-            name='campaign'
-            active={activeItem === 'campaign'}
+            name='activity'
+            active={activeItem === 'activity'}
             onClick={this.handleItemClick}
           />
         </Menu>

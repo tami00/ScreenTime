@@ -23,7 +23,8 @@ export default class OtherProfile extends Component {
       activeItem: 'favourites',
       currentUser: { username: "" },
       userReady: false,
-      userDetails: []
+      userDetails: [],
+      following: true
     };
   }
 
@@ -69,10 +70,6 @@ export default class OtherProfile extends Component {
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
-  onClick = (e) => {
-    this.props.history.push("/profile/edit");
-  }
-
   render() {
     if (this.state.redirect) {
       return <Redirect to={this.state.redirect} />
@@ -80,8 +77,9 @@ export default class OtherProfile extends Component {
     const { activeItem } = this.state;
     const { userDetails } = this.state;
     const { currentUser } = this.state;
+    const { following } = this.state;
 
-    const clickHandler = () => {
+    const followUser = () => {
         
         const currentID = currentUser.id;
         const id = this.props.id;
@@ -91,14 +89,31 @@ export default class OtherProfile extends Component {
     
         Axios.put(`http://localhost:8080/api/follow/?id=${id}`,  { data: currentID }, { headers: authHeader() })
         .then(response => {
-            if (response.data.success) {
+            if (response.data) {
                 console.log('FOLLOWED', response.data)
                 // this.setState({ userDetails: response.data.details })
             } else {
-                alert('Error')
+               console.log(response)
             }
         })
+
     }
+
+    const unfollowUser = () => {
+        
+      const currentID = currentUser.id;
+      const id = this.props.id;
+      
+      console.log('CURRENT ID',currentID)
+      console.log('otherUserID',id)
+
+      Axios.put(`http://localhost:8080/api/unfollow/?id=${id}`,  { data: currentID }, { headers: authHeader() })
+      .then(response => {
+        this.setState({following: false})
+        console.log('UNFOLLOWED', response.data)
+      })
+
+  }
 
 
     return (
@@ -115,7 +130,9 @@ export default class OtherProfile extends Component {
               <strong>Bio: </strong>
               {userDetails.bio}
             </p>
-            <button onClick={clickHandler}> Follow </button>
+            <button onClick={followUser}> Follow </button>
+            <button onClick={unfollowUser}> Unfollow </button>
+
           </div> : null}
         <Menu>
           <Dropdown
@@ -144,11 +161,6 @@ export default class OtherProfile extends Component {
           <Menu.Item
             name='portfolio'
             active={activeItem === 'portfolio'}
-            onClick={this.handleItemClick}
-          />
-          <Menu.Item
-            name='campaign'
-            active={activeItem === 'campaign'}
             onClick={this.handleItemClick}
           />
         </Menu>
