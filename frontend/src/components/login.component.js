@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-
+import GoogleLogin from 'react-google-login'
 import AuthService from "../services/auth.service";
+import Axios from 'axios'
 
 const required = value => {
   if (!value) {
@@ -79,6 +80,22 @@ export default class Login extends Component {
     }
   }
 
+  handleLogin = (googleData) => {
+    console.log(googleData)
+    const tokenId = googleData.tokenId
+    console.log(tokenId)
+
+    Axios.post('http://localhost:8080/api/auth/googleLogin', {data: tokenId})
+    .then(response => {
+          console.log('GOOGLE LOGIN SUCCESS', response)
+          // this.setState({ userDetails: response.data.details })
+  })
+  }
+
+  handleFailure = (googleData) => {
+    alert(googleData)
+  }
+
   render() {
     return (
       <div className="col-md-12">
@@ -95,6 +112,13 @@ export default class Login extends Component {
               this.form = c;
             }}
           >
+                      <GoogleLogin 
+            clientId={process.env.REACT_APP_CLIENT_KEY}
+            buttonText="Login with Google"
+            onSuccess={this.handleLogin}
+            onFailure={this.handleFailure}>
+          </GoogleLogin>
+
             <div className="form-group">
               <label htmlFor="username">Username</label>
               <Input

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Axios from 'axios';
-import { Typography, Button, Form, message, Input, InputNumber} from 'antd';
+import { Typography, Button, Form, message, Input, InputNumber } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import Dropzone from 'react-dropzone';
 import authService from '../../services/auth.service';
@@ -22,13 +22,13 @@ function EditProfile() {
 
     const [emailError, setEmailError] = useState('')
     const validateEmail = (e) => {
-      var email = e.target.value
-    
-      if (validator.isEmail(email)) {
-        console.log('valid email')
-      } else {
-        setEmailError('Enter valid Email!')
-      }
+        var email = e.target.value
+
+        if (validator.isEmail(email)) {
+            console.log('valid email')
+        } else {
+            setEmailError('Enter valid Email!')
+        }
     }
 
     const uploadSuccess = () => {
@@ -47,7 +47,7 @@ function EditProfile() {
         setUsername(e.currentTarget.value)
     }
 
-    const handleChangeEmail= (e) => {
+    const handleChangeEmail = (e) => {
         console.log(e.currentTarget.value)
 
         setEmail(e.currentTarget.value)
@@ -73,11 +73,11 @@ function EditProfile() {
         // if (sendVideo===true){
         //     return uploadSuccess()
         // }
-        
+
         // if(sendVideo===false) {
         //     return uploadError()
         // }
-        
+
 
         event.preventDefault()
 
@@ -86,20 +86,23 @@ function EditProfile() {
             username: username,
             email: email,
             bio: bio,
-            phoneNo:phoneNo,
+            phoneNo: phoneNo,
             filePath: filePath
         }
 
-        Axios.post('http://localhost:8080/api/auth/update', variables, { headers: authHeader() })
-            .then(response => {
-                if (response.data.success) {
-                    console.log('Updated')
-                    // return uploadSuccess()
-                } else {
-                    console.log(response.error)
-                    // return uploadError()
-                }
-            })
+        Axios.post("http://localhost:8080/api/auth/update", variables, {
+            headers: authHeader(),
+        }).then((response) => {
+            console.log(variables.userFrom);
+            if (response.data.success) {
+                console.log("Updated");
+                localStorage.setItem("user", JSON.stringify(response.data));
+                // return uploadSuccess()
+            } else {
+                console.log(response.error);
+                // return uploadError()
+            }
+        });
 
     }
 
@@ -166,12 +169,12 @@ function EditProfile() {
                     value={email}
                     style={{ width: 160 }}
                 />
-                <br/><br/>
-            <label>Phone Number</label>
-            <InputNumber
-                 onChange={handleChangePhoneNo}
-                 value={phoneNo}
-            />
+                <br /><br />
+                <label>Phone Number</label>
+                <InputNumber
+                    onChange={handleChangePhoneNo}
+                    value={phoneNo}
+                />
                 <br /><br />
                 <label>Bio</label>
                 <TextArea

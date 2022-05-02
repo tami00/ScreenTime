@@ -71,7 +71,18 @@ export default class Profile extends Component {
         {(this.state.userReady) ?
           <div>
             <br></br>
-            <Avatar size={180} icon={<UserOutlined />}/>
+
+            {currentUser.filePath ? (
+              <img
+                height={180}
+                width={180}
+                src={currentUser.filePath.split("\\").join("/")}
+              ></img>
+            ) : (
+              <Avatar size={180} icon={<UserOutlined />} />
+            )}
+
+
             <p>
               <strong>Email:</strong>{" "}
               {currentUser.email}
