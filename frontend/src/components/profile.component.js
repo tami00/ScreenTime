@@ -9,6 +9,7 @@ import FutureFilms from '../components/films/futureFilms';
 import FavouriteContainer from '../components/films/favouriteContainer';
 import { Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+import Activity from './activity/Activity'
 
 export default class Profile extends Component {
   constructor(props) {
@@ -49,7 +50,7 @@ export default class Profile extends Component {
       case 'futurefilms':
         return <FutureFilms />;
         case 'activity':
-          return;
+          return <Activity/>;
     }
   }
 

@@ -1,12 +1,13 @@
-const {authJwt}  = require("../middlewares");
+const { authJwt } = require("../middlewares");
 const controller = require("../controllers/user.controller");
 const multer = require('multer')
 const User = require('../models/user.model');
+const Video = require('../models/video.model');
 const { findByIdAndUpdate } = require("../models/user.model");
 const { user } = require("../models");
 
-module.exports = function(app) {
-  app.use(function(req, res, next) {
+module.exports = function (app) {
+  app.use(function (req, res, next) {
     res.header(
       console.log(req.header["x-access-token"]),
       console.log(req.header),
@@ -22,17 +23,17 @@ module.exports = function(app) {
 
   var storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads/')
+      cb(null, 'uploads/')
     },
     filename: (req, file, cb) => {
-        cb(null, `${Date.now()}_${file.originalname}`)
+      cb(null, `${Date.now()}_${file.originalname}`)
     },
     fileFilter: (req, file, cb) => {
-        const ext = path.extname(file.originalname)
-        if (ext !== '.mp4') {
-            return cb(res.status(400).end('only jpg, png, mp4 is allowed'), false);
-        }
-        cb(null, true)
+      const ext = path.extname(file.originalname)
+      if (ext !== '.mp4') {
+        return cb(res.status(400).end('only jpg, png, mp4 is allowed'), false);
+      }
+      cb(null, true)
     }
   })
 
@@ -41,12 +42,12 @@ module.exports = function(app) {
   app.post("/api/uploadFile", (req, res) => {
 
     upload(req, res, err => {
-        if (err) {
-            return res.json({ success: false, err })
-        }
-        return res.json({ success: true, filePath: res.req.file.path, fileName: res.req.file.filename })
+      if (err) {
+        return res.json({ success: false, err })
+      }
+      return res.json({ success: true, filePath: res.req.file.path, fileName: res.req.file.filename })
     })
-  
+
   });
 
   app.get('/api/search', async function (req, res, next) {
@@ -105,80 +106,92 @@ module.exports = function(app) {
   // }
   // })
 
-  app.put('/api/follow',(req,res)=>{
-        const { id } = req.query;
+  app.put('/api/follow', (req, res) => {
+    const { id } = req.query;
     const userFrom = req.body.data
 
-    User.findByIdAndUpdate(id,{
-        $push:{followers:userFrom}
-    },{
-        new:true
-    },(err,result)=>{
-        if(err){
-            return res.status(422).json({error:err})
-        }
-      User.findByIdAndUpdate(userFrom,{
-          $push:{following:id}
-          
-      },{new:true}).then(result=>{
-          res.json(result)
-      }).catch(err=>{
-          return res.status(422).json({error:err})
+    User.findByIdAndUpdate(id, {
+      $push: { followers: userFrom }
+    }, {
+      new: true
+    }, (err, result) => {
+      if (err) {
+        return res.status(422).json({ error: err })
+      }
+      User.findByIdAndUpdate(userFrom, {
+        $push: { following: id }
+
+      }, { new: true }).then(result => {
+        res.json(result)
+      }).catch(err => {
+        return res.status(422).json({ error: err })
       })
 
     }
     )
-})
+  })
 
-// app.post("/following", (req, res) => {
-//   // const { id } = req.query;
-//   // const userFrom = req.body.data
+  // app.post("/following", (req, res) => {
+  //   // const { id } = req.query;
+  //   // const userFrom = req.body.data
 
-//   User.find({id:req.body.id ,userFrom:req.body.userFrom
-//   }).exec((err, following) => {
-//     if (err) return res.status(400).send(err);
-//     console.log(following.length);
-//     let result = false;
-//     if (following.length !== 0) {
-//       result = true;
-//     }
+  //   User.find({id:req.body.id ,userFrom:req.body.userFrom
+  //   }).exec((err, following) => {
+  //     if (err) return res.status(400).send(err);
+  //     console.log(following.length);
+  //     let result = false;
+  //     if (following.length !== 0) {
+  //       result = true;
+  //     }
 
-//     res.status(200).json({ success: true, favourited: result });
-//   });
-// });
+  //     res.status(200).json({ success: true, favourited: result });
+  //   });
+  // });
 
-app.put('/api/unfollow',(req,res)=>{
-  const { id } = req.query;
-  const userFrom = req.body.data
+  app.put('/api/unfollow', (req, res) => {
+    const { id } = req.query;
+    const userFrom = req.body.data
 
-  User.findByIdAndUpdate(id,{
-      $pull:{followers:userFrom}
-  },{
-      new:true
-  },(err,result)=>{
-      if(err){
-          return res.status(422).json({error:err})
+    User.findByIdAndUpdate(id, {
+      $pull: { followers: userFrom }
+    }, {
+      new: true
+    }, (err, result) => {
+      if (err) {
+        return res.status(422).json({ error: err })
       }
-    User.findByIdAndUpdate(userFrom,{
-        $pull:{following:id}
-        
-    },{new:true}).select("-password").then(result=>{
-        res.json(result)
-    }).catch(err=>{
-        return res.status(422).json({error:err})
-    })
+      User.findByIdAndUpdate(userFrom, {
+        $pull: { following: id }
 
-  }
-  )
-})
+      }, { new: true }).select("-password").then(result => {
+        res.json(result)
+      }).catch(err => {
+        return res.status(422).json({ error: err })
+      })
+
+    }
+    )
+  })
 
   app.get('/api/getUserDetails', async function (req, res, next) {
     const { id } = req.query;
     User.findById(id)
-    .exec((err, details) => {
-        if(err) return res.status(400).send(err)
-        res.status(200).json({success: true, details})
-    })
+      .exec((err, details) => {
+        if (err) return res.status(400).send(err)
+        res.status(200).json({ success: true, details })
+      })
   });
+
+  app.post("/api/getFollowing", [authJwt.verifyToken], (req, res) => {
+    Video.find({"id": req.body.data}) 
+    // console.log("ID ", req.body.data)
+    .populate('userFrom')
+    .exec((err, videos) => {
+        if(err) return res.status(400).send(err)
+        res.status(200).json({success: true, videos})
+    })
+    
+  })
+  
 };
 
