@@ -10,15 +10,15 @@ export const Container = styled.div`
 `;
 
 export const Container2 = styled.div`
+margin:auto;
   position: absolute;
   z-index: 1;
   left: 0; right: 0; bottom: 0;
-  background: #808080;
   padding: 3px 8px;
-  border-top: 1px solid lightgray;
   color: #fff;
   overflow-y: auto;
-  max-height: 50vh;
+  max-height: 250px;
+  width: 700px;
 `;
 
 export const ShowTimesContainer = styled.div`
@@ -69,6 +69,7 @@ export const MovieInfo = styled.span`
   & span {
     opacity: 0.5;
   }
+  width:400px
 `;
 
 export const Button = styled.button`

@@ -30,7 +30,7 @@ exports.signup = (req, res) => {
       port: 587,
       secure: false, 
       auth: {
-        user: "testfypuser@outlook.com", 
+        user: "screentimeIE@outlook.com", 
         pass: "1234567FYP!", 
       },
       tls: {
@@ -40,10 +40,10 @@ exports.signup = (req, res) => {
     });
 
     var mailOptions = {
-      from: "testfypuser@outlook.com",
+      from: "screentimeIE@outlook.com",
       to: user.email,
-      subject: 'Thanks for registering with Movie App',
-      text: 'Blah Blah blah'
+      subject: 'Registration',
+      text: 'Welcome to ScreenTime, a website for film lovers, creators and all those inbetween. Find new art and inspiration by following users or feel free to share your own short films for others to see.'
     };
 
     transporter.sendMail(mailOptions, function(error, info){
@@ -112,6 +112,7 @@ exports.update = async (req, res) => {
     user.email = req.body.email || user.email;
     user.phoneNo = req.body.phoneNo || user.phoneNo;
     user.bio = req.body.bio || user.bio;
+    user.filePath = req.body.filePath || user.filePath;
 
     if (req.body.password) {
       user.password = req.body.password;
@@ -124,13 +125,14 @@ exports.update = async (req, res) => {
     });
 
     res.json({
-      _id: updatedUser._id,
-      username: updatedUser.username,
-      email: updatedUser.email,
-      phoneNo: updatedUser.phoneNo,
-      bio: updatedUser.bio,
-      filePath: updatedUser.filePath,
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      phoneNo: user.phoneNo,
+      bio: user.bio,
+      filePath: user.filePath,
       accessToken: token,
+      success: true,
     });
   } else {
     res.status(404).send({ message: 'User Not found.' });

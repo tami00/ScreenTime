@@ -20,6 +20,10 @@ function UpdatePortfolio() {
         message.success('Video uploaded succesfully');
     };
 
+    const saveSuccess = () => {
+        message.success('Video saved succesfully');
+    };
+
     const detailsError = () => {
         message.error('Fill in all details');
     };
@@ -89,7 +93,7 @@ function UpdatePortfolio() {
                 if (response.data.success) {
                     console.log('Saved video')
                     setFilePath(response.data.filePath)
-                    // console.log(response.data.fileName)
+                    return saveSuccess()
                 } else {
                     alert('Failed to save video')
                 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Container2, ShowTimesContainer, PosterImg, InfoColumn, MovieName, MovieInfo, Button } from "./movie-info.styles";
+import { DetailsDiv, Container, Container2, ShowTimesContainer, PosterImg, InfoColumn, MovieName, MovieInfo, Button } from "./movie-info.styles";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Reviews from "../review/reviews";

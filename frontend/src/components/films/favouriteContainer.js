@@ -26,12 +26,13 @@ const FavouriteContainer = (props) => {
 
     const [favouriteList, setFavouriteList] = useState([])
     const [otherFavouriteList, otherSetFavouriteList] = useState([])
-    const [visible, setVisible] = useState(3)
+    const [visible, setVisible] = useState(4)
+    const [loading, setLoading] = useState(true);
     // const [maxValue, setMaxValue] = useState()
 
 
     const handleChange = (value) => {
-       setVisible((prevValue) => prevValue + 3)
+       setVisible((prevValue) => prevValue + 4)
     }
 
     useEffect(() => {
@@ -41,6 +42,7 @@ const FavouriteContainer = (props) => {
                 if (response.data.success) {
                     console.log('Others Users Favourite Films', response.data)
                     otherSetFavouriteList(response.data.films)
+                    setTimeout(() => setLoading(false), 300);
                 } else {
                     alert('Error')
                 }
@@ -55,13 +57,14 @@ const FavouriteContainer = (props) => {
                 if (response.data.success) {
                     console.log('Users Favourite Films', response.data)
                     setFavouriteList(response.data.films)
+                    setTimeout(() => setLoading(false), 300);
                 } else {
                     alert('Error')
                 }
             })
     },[])
 
-    const otherUserDisplayCards = otherFavouriteList && otherFavouriteList.slice(0, visible).map((films, index) => {
+    const otherUserDisplayCards = !loading && otherFavouriteList && otherFavouriteList.slice(0, visible).map((films, index) => {
         return (
         <Col lg={6} md={8} xs={24}>
         <FavouriteCard key={index} films={films}/>
@@ -69,7 +72,7 @@ const FavouriteContainer = (props) => {
         )
     })
 
-    const displayCards = favouriteList && favouriteList.slice(0, visible).map((films, index) => {
+    const displayCards = !loading && favouriteList && favouriteList.slice(0, visible).map((films, index) => {
         return (
         <Col lg={6} md={8} xs={24}>
         <FavouriteCard key={index} films={films}/>
@@ -79,7 +82,7 @@ const FavouriteContainer = (props) => {
 
     function render (){
         if(url.indexOf(id) > 1) {
-            if(otherFavouriteList.length === 0){
+            if(!loading && otherFavouriteList.length === 0){
                 return (
                    <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
                     <h2>User does not have any favourites added</h2>
@@ -96,7 +99,7 @@ const FavouriteContainer = (props) => {
                 )
             }
         }else if (url.indexOf('profile') > 1) {
-            if (favouriteList.length === 0){
+            if (!loading && favouriteList.length === 0){
             return (
                 <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
                  <h2>Add movies to your favourites</h2>
@@ -117,6 +120,7 @@ const FavouriteContainer = (props) => {
 
   return (
     <div style={{ maxWidth: '2000px', margin: '2rem auto' }}>  
+    {loading && <div>Loading...</div>}
     { render()}
         {/* {(() =>{
             if(url.indexOf(id)) {

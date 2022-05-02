@@ -10,6 +10,7 @@ import FavouriteContainer from '../components/films/favouriteContainer';
 import { Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import Activity from './activity/Activity'
+import ReccomendedMovies from './recommender/recommdender'
 
 export default class Profile extends Component {
   constructor(props) {
@@ -51,6 +52,8 @@ export default class Profile extends Component {
         return <FutureFilms />;
         case 'activity':
           return <Activity/>;
+          case 'recommendations':
+          return <ReccomendedMovies/>;
     }
   }
 
@@ -113,6 +116,11 @@ export default class Profile extends Component {
           <Menu.Item
             name='activity'
             active={activeItem === 'activity'}
+            onClick={this.handleItemClick}
+          />
+          <Menu.Item
+            name='recommendations'
+            active={activeItem === 'recommendations'}
             onClick={this.handleItemClick}
           />
         </Menu>

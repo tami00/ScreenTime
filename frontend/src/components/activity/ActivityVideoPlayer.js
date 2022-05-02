@@ -33,7 +33,7 @@ function VideoPlayer(props) {
   }
 
   return (
-    <div style = {{backgroundColor:'white'}}>
+    <div style = {{border: '10px'}}>
     <div className="player-wrapper">
        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <ReactPlayer

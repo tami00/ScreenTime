@@ -121,7 +121,9 @@ export default class OtherProfile extends Component {
         {(this.state.userReady) ?
           <div>
             <br></br>
-            <Avatar size={180} icon={<UserOutlined />}/>
+            <Avatar 
+              size={180} 
+              />
             <br></br>
               <br></br>
             <strong>Username: </strong>

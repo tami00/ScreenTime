@@ -3,17 +3,27 @@ import styled from "styled-components";
 export const MovieCard = styled.div`
 display: flex;
 flex-direction: column;
-padding: 10px;
-width: 280px;
+width: 175px;
 box-shadow: 0 3px 10px 0 #aaa;
 cursor: pointer;
-gap: 24px;
+gap: 0;
+border-radius: 5px;
+cursor : pointer;
 `;
+
+
+export const BottomDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  height : 65px;
+  padding : 5px;
+`;
+
 export const MovieName = styled.span`
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 600;
   color: black;
-  margin: 15px 0;
+  margin: 5px 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -23,9 +33,10 @@ export const InfoColumn = styled.div`
   flex-direction: row;
   justify-content: space-between;
 `;
+
 export const PosterImg = styled.img`
   object-fit: cover;
-  height: 721px;
+  height: 250px;
 `;
 
 export const MovieInfo = styled.span`

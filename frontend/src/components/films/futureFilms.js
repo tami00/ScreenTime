@@ -17,6 +17,7 @@ const FutureFilms = (props) => {
     const [futureFilmsList, setFutureFilmsList] = useState([])
     const [otherFutureFilmsList, setOtherFutureFilmsList] = useState([])
     const [visible, setVisible] = useState(3)
+    const [loading, setLoading] = useState(true);
 
     const id = props.userID;
 
@@ -32,6 +33,7 @@ const FutureFilms = (props) => {
         if (response.data.success) {
           console.log('Users Future Films', response.data)
           setFutureFilmsList(response.data.films)
+          setTimeout(() => setLoading(false), 300);
         } else {
           alert('Error')
         }
@@ -44,6 +46,7 @@ const FutureFilms = (props) => {
         if (response.data.success) {
           console.log('Other Users Future Films', response.data)
           setOtherFutureFilmsList(response.data.films)
+          setTimeout(() => setLoading(false), 300);
         } else {
           alert('Error')
         }
@@ -55,13 +58,14 @@ const FutureFilms = (props) => {
         .then(response => {
           if (response.data.success) {
             console.log('Sent successfully');
+            setTimeout(() => setLoading(false), 300);
           } else {
             alert('Error')
           }
         })
   }
 
-  const displayCards = futureFilmsList && futureFilmsList.slice(0, visible).map((films, index) => {
+  const displayCards = !loading && futureFilmsList && futureFilmsList.slice(0, visible).map((films, index) => {
     return (
     <Col lg={6} md={8} xs={24}>
     <FavouriteCard key={index} films={films}/>
@@ -69,7 +73,7 @@ const FutureFilms = (props) => {
     )
 })
 
-const otherUserDisplayCards = otherFutureFilmsList && otherFutureFilmsList.slice(0, visible).map((films, index) => {
+const otherUserDisplayCards = !loading && otherFutureFilmsList && otherFutureFilmsList.slice(0, visible).map((films, index) => {
   return (
   <Col lg={6} md={8} xs={24}>
   <FavouriteCard key={index} films={films}/>
@@ -79,7 +83,7 @@ const otherUserDisplayCards = otherFutureFilmsList && otherFutureFilmsList.slice
 
 function render (){
   if(url.indexOf(id) > 1) {
-      if(otherFutureFilmsList.length === 0){
+      if(!loading && otherFutureFilmsList.length === 0){
           return (
              <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
               <h2>User does not have any films added</h2>
@@ -96,7 +100,7 @@ function render (){
           )
       }
   }else if (url.indexOf('profile') > 1) {
-      if (futureFilmsList.length === 0){
+      if (!loading && futureFilmsList.length === 0){
       return (
           <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
            <h2>Add movies to your watchlist</h2>
@@ -119,7 +123,8 @@ function render (){
 }
 
   return (
-    <div style={{ maxWidth: '2000px', margin: '2rem auto' }}>             
+    <div style={{ maxWidth: '2000px', margin: '2rem auto' }}>    
+    {loading && <div>Loading...</div>}         
         {render()}
     </div>
   )

@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import authService from "../../services/auth.service";
 import authHeader from "../../services/auth-header";
+import {HeartOutlined, HeartFilled } from '@ant-design/icons'
+import {Button} from 'antd';
 
 const FavouriteButton = styled.button`
   height: 30px;
@@ -67,9 +69,12 @@ function FavouriteComp(props) {
 
   return (
     <div>
-      <FavouriteButton onClick={onClickFavourite}>
+      {!favourited ? 
+      <Button icon={<HeartOutlined/>} onClick={onClickFavourite}/> 
+      : <Button icon={<HeartFilled/>} onClick={onClickFavourite}/> }
+      {/* <HeartOutlined onClick={onClickFavourite}>
         {!favourited ? "add" : "remove"}
-      </FavouriteButton>
+      </HeartOutlined> */}
     </div>
   );
 }

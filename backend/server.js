@@ -44,6 +44,7 @@ app.use('/api/futureFilms', require('./app/routes/futureFilms.routes'));
 app.use('/api/watchlist', require('./app/routes/notification.routes'));
 app.use('/api/portfolio', require('./app/routes/portfolio.routes'));
 app.use('/api/parser', require('./app/routes/parser.routes'));
+app.use('/api/recommender', require('./app/routes/recommender.routes'));
 // routes
 // require(".app/routes/favourite.routes")(app);
 require("./app/routes/auth.routes")(app);

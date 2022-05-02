@@ -11,6 +11,7 @@ function Portfolio(props) {
   const currentUser = authService.getCurrentUser();
   const [videoDetails, setVideoDetails] = useState([])
   const [otherVideoDetails, otherSetVideoDetails] = useState([])
+  const [loading, setLoading] = useState(true);
 
   const id = props.userID;
 
@@ -22,6 +23,7 @@ function Portfolio(props) {
         if (response.data.success) {
           console.log('VIDEO DETAILS:', response.data.videos)
           setVideoDetails(response.data.videos)
+          setTimeout(() => setLoading(false), 300);
         } else {
           alert('Error')
         }
@@ -34,6 +36,7 @@ function Portfolio(props) {
         if (response.data.success) {
           console.log('OTHER YSER VIDEO DETAILS:', response.data.videos)
           otherSetVideoDetails(response.data.videos)
+          setTimeout(() => setLoading(false), 300);
         } else {
           alert('Error')
         }
@@ -42,7 +45,7 @@ function Portfolio(props) {
 
   function render (){
     if(url.indexOf(id) > 1) {
-        if(otherVideoDetails.length === 0){
+        if(!loading && otherVideoDetails.length === 0){
             return (
                <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
                 <h2>User does not have any videos added</h2>
@@ -51,14 +54,14 @@ function Portfolio(props) {
         } else {
             return (
               <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-              {otherVideoDetails.map((video, index) => (
+              {!loading && otherVideoDetails.map((video, index) => (
                 <VideoPlayer key={index} video={video} />
               ))}
             </div>
             )
         }
     }else if (url.indexOf('profile') > 1) {
-        if (videoDetails.length === 0){
+        if (!loading && videoDetails.length === 0){
         return (
             <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
             <h2>Upload to your portfolio</h2>
@@ -67,7 +70,7 @@ function Portfolio(props) {
         } else {
             return (
               <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-              {videoDetails.map((video, index) => (
+              {!loading && videoDetails.map((video, index) => (
                 <VideoPlayer key={index} video={video} />
               ))}
             </div>
@@ -79,6 +82,7 @@ function Portfolio(props) {
 
   return (
     <div style={{ maxWidth: '1000px', margin: '2rem auto' }}>
+    {loading && <div>Loading...</div>}
       {/* {videoDetails.length === 0 ?
         <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
           <h2>Upload to your portfolio</h2>

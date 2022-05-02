@@ -4,6 +4,8 @@ import styled from "styled-components";
 import authService from "../../services/auth.service";
 import authHeader from "../../services/auth-header";
 import FutureFilms from "./futureFilms";
+import {EyeOutlined , EyeInvisibleOutlined } from '@ant-design/icons'
+import {Button} from 'antd';
 
 const FutureFilmsButton = styled.button`
   height: 30px;
@@ -73,9 +75,12 @@ function FutureFilmsComponent(props) {
 
   return (
     <div>
-      <FutureFilmsButton onClick={onClickAdd}>
+      {!added ? 
+      <Button icon={<EyeOutlined/>} onClick={onClickAdd}/> 
+      : <Button icon={<EyeInvisibleOutlined/>} onClick={onClickAdd}/> }
+      {/* <FutureFilmsButton onClick={onClickAdd}>
         {!added ? "add" : "remove"}
-      </FutureFilmsButton>
+      </FutureFilmsButton> */}
     </div>
   );
 }

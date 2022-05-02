@@ -10,6 +10,7 @@ const { Title } = Typography;
 
 function Activity(props) {
   const [videoDetails, setVideoDetails] = useState([])
+  const [loading, setLoading] = useState(true);
 
   const id = props.userID;
 
@@ -19,6 +20,7 @@ function Activity(props) {
                   if (response.data.success) {
                       console.log('FOLLOWING VID',response.data.videos)
                       setVideoDetails(response.data.videos)
+                      setTimeout(() => setLoading(false), 300);
                   } else {
                       alert('Error')
                   }
@@ -27,7 +29,7 @@ function Activity(props) {
 
 
   function render (){
-        if (videoDetails.length === 0){
+        if (!loading && videoDetails.length === 0){
         return (
             <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
             <h2>No activity</h2>
@@ -48,6 +50,8 @@ function Activity(props) {
 
   return (
     <div style={{ maxWidth: '1000px', margin: '2rem auto' }}>
+       {loading && <div>Loading...</div>}
+
       {/* {videoDetails.length === 0 ?
         <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
           <h2>Upload to your portfolio</h2>

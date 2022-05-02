@@ -18,6 +18,7 @@ const SentimentComponent = (props) => {
   const [reviewList, setReviewList] = useState([]);
   const [minValue, setMinValue] = useState(0)
   const [maxValue, setMaxValue] = useState(4)
+  const [loading, setLoading] = useState(true);
 
   const id = props.userID;
   console.log("ID",id)
@@ -41,6 +42,7 @@ const SentimentComponent = (props) => {
             if (response.data.success) {
                 console.log('Others Users Reviews', response.data)
                 setOtherReviewList(response.data.reviews)
+                setTimeout(() => setLoading(false), 300);
             } else {
                 alert('Error')
             }
@@ -53,6 +55,7 @@ const SentimentComponent = (props) => {
         if (response.data.success) {
           // console.log('Users Reviews', response.data)
           setReviewList(response.data.reviews)
+          setTimeout(() => setLoading(false), 300);
         } else {
           alert('Error')
         }
@@ -60,8 +63,9 @@ const SentimentComponent = (props) => {
   }, [])
 
   function render() {
+    {loading && <div>Loading...</div>}
     if (url.indexOf(id) > 1) {
-      if (otherReviewList.length === 0) {
+      if (!loading && otherReviewList.length === 0) {
         return (
           <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
             <h2>User does not have any reviews added</h2>
@@ -71,7 +75,7 @@ const SentimentComponent = (props) => {
         return (
           <div>
             <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-              {otherReviewList && otherReviewList.slice(minValue, maxValue).map((review, index) => {
+              {!loading && otherReviewList && otherReviewList.slice(minValue, maxValue).map((review, index) => {
                 return <Card key={index} review={review} style={{ width: 700 }}>
                   <Meta
                     avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
@@ -112,7 +116,7 @@ const SentimentComponent = (props) => {
         )
       }
     } else if (url.indexOf('profile') > 1) {
-      if (reviewList.length === 0) {
+      if (!loading && reviewList.length === 0) {
         return (
           <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
             <h2>Leave a review</h2>
@@ -122,7 +126,7 @@ const SentimentComponent = (props) => {
         return (
           <div>
             <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-              {reviewList && reviewList.slice(minValue, maxValue).map((review, index) => {
+              {!loading && reviewList && reviewList.slice(minValue, maxValue).map((review, index) => {
                 return <Card key={index} review={review} style={{ width: 700 }}>
                   <Meta
                     avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
@@ -143,8 +147,8 @@ const SentimentComponent = (props) => {
                           align="right"
                           alt="positive" />
                         : <img
-                          width={50}
-                          src="https://www.pinclipart.com/picdir/middle/82-822786_cartoon-angry-emoji-pictures-to-pin-on-pinterest.png"
+                          width={80}
+                          src="/angryemoji.jpg"
                           align="right"
                           alt="negative" />
                       : ''}
