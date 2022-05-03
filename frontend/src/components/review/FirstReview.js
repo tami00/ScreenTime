@@ -8,6 +8,9 @@ function FirstReview(props) {
   const currentUser = authService.getCurrentUser();
   const [reply, setReply] = useState(false);
   const [reviewValue, setReviewValue] = useState('');
+  const img = currentUser.filePath
+  const pfp = img.toString()
+  console.log('HERE',img)
 
   const handleChange = (e) => {
     setReviewValue(e.currentTarget.value);
@@ -50,20 +53,19 @@ function FirstReview(props) {
   return (
     <Comment.Group>
       <Header as="h3" dividing>
-        Comments
+        Reviews
       </Header>
 
       <Comment>
-        <Comment.Avatar src="https://react.semantic-ui.com/images/avatar/small/matt.jpg" />
         <Comment.Content>
           <Comment.Author as="a">
             {' '}
-            {props.review.author[0].username}{' '}
+            {props.review.author[0]?.username}{' '}
           </Comment.Author>
           <Comment.Text>
-            <p>{props.review.content}</p>
+            <p>{props.review?.content}</p>
           </Comment.Text>
-          {!props.isNested && (
+          {props.isNested && (
             <Comment.Actions>
               <Comment.Action>{action}</Comment.Action>
             </Comment.Actions>
@@ -79,7 +81,7 @@ function FirstReview(props) {
             value={reviewValue}
             onChange={handleChange}
           />
-          {!props.isNested && (
+          {props.isNested && (
             <Button
               content="Add Reply"
               labelPosition="left"

@@ -151,25 +151,6 @@ export default class Register extends Component {
     }
   }
 
-  handleLogin = (googleData) => {
-    console.log(googleData)
-    const tokenId = googleData.tokenId
-    console.log(tokenId)
-
-    Axios.post('http://localhost:8080/api/auth/googleLogin', {data: tokenId})
-    .then(response => {
-          console.log('GOOGLE LOGIN SUCCESS', response)
-          // this.setState({ userDetails: response.data.details })
-  })
-  }
-
-  handleFailure = (googleData) => {
-    alert(googleData)
-  }
-
-
-
-
   render() {
   
     // console.log('ENV',process.env.REACT_APP_CLIENT_KEY)
@@ -177,16 +158,10 @@ export default class Register extends Component {
       <div className="col-md-12">
         <div className="card card-container">
           <img
-            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+            src="/logo.png"
             alt="profile-img"
             className="profile-img-card"
           />
-          <GoogleLogin 
-            clientId={process.env.REACT_APP_CLIENT_KEY}
-            buttonText="Login with Google"
-            onSuccess={this.handleLogin}
-            onFailure={this.handleFailure}>
-          </GoogleLogin>
 
           <Form
             onSubmit={this.handleRegister}

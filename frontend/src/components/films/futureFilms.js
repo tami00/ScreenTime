@@ -5,18 +5,14 @@ import FavouriteCard from "./favouriteCard";
 import Axios from "axios";
 import authService from '../../services/auth.service'
 import authHeader from '../../services/auth-header';
-import { Col, Row  } from 'antd'
-
-  const Button = styled.button`
-  height: 30px;
-  width: 40px;
-`;
+import { Col, Row, Button  } from 'antd'
+import {BellOutlined } from '@ant-design/icons'
 
 const FutureFilms = (props) => {
     const currentUser = authService.getCurrentUser();
     const [futureFilmsList, setFutureFilmsList] = useState([])
     const [otherFutureFilmsList, setOtherFutureFilmsList] = useState([])
-    const [visible, setVisible] = useState(3)
+    const [visible, setVisible] = useState(4)
     const [loading, setLoading] = useState(true);
 
     const id = props.userID;
@@ -24,7 +20,7 @@ const FutureFilms = (props) => {
     const url = window.location.href 
 
     const handleChange = (value) => {
-      setVisible((prevValue) => prevValue + 3)
+      setVisible((prevValue) => prevValue + 4)
    }
 
       useEffect(() => {
@@ -95,8 +91,10 @@ function render (){
           <Row gutter={[16, 16]}>
           {otherUserDisplayCards} 
           </Row>
-          <button onClick={handleChange}>Load</button>
-          </div>
+              {visible > 3 ?
+         <Button onClick={handleChange}>Load</Button>
+        : ''}
+              </div>
           )
       }
   }else if (url.indexOf('profile') > 1) {
@@ -109,12 +107,12 @@ function render (){
       } else {
           return (
           <div>
-             <Button onClick={onClickNotify}/>
+             <Button icon={<BellOutlined/>}onClick={onClickNotify}/>
               <Row gutter={[16, 16]}>
               {displayCards} 
               </Row>
               {visible > 3 ?
-         <button onClick={handleChange}>Load</button>
+         <Button onClick={handleChange}>Load</Button>
         : ''}
               </div>
           )

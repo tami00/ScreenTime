@@ -23,7 +23,7 @@ router.post("/notifications", [authJwt.verifyToken], (req, res) => {
         // console.log(movieDate)
         const userFrom = item.userFrom;
         const title = item.movieTitle;
-        var earliestPossibleDT = moment().add(1,'days');;
+        var earliestPossibleDT = moment().add(1,'days').format("YYYY-MM-DD");
         var releaseDT = moment(movieDate);
         if (releaseDT.isBefore(earliestPossibleDT)) {
             console.log(title + ' movie was released already')
@@ -33,7 +33,7 @@ router.post("/notifications", [authJwt.verifyToken], (req, res) => {
         userFrom.forEach(function (item ) {
             const username = item.username
             const digits = item.phoneNo 
-            const countryCode = "353" 
+            const countryCode = "+353" 
             const phoneNo = countryCode + digits
             console.log(phoneNo)
             //check if phone number is valid
@@ -60,17 +60,31 @@ router.post("/notifications", [authJwt.verifyToken], (req, res) => {
                             console.log(title + " has already been released!")
                         }
                         else {
+                            messagebird.messages.create({
+                                originator : 'ScreenTime',
+                                recipients : [phoneNo],
+                                body : 'You will be notified of future releases'
+                             }, function (err, response) {
+                                if (err) {
+                                   console.log("ERROR:");
+                                   console.log(err);
+                               } else {
+                                   console.log("SUCCESS:");
+                                   console.log(response.recipients.recipient);
+                               }
+                            });
                             //schedule reminder week before release
                             var reminderDT = releaseDT.clone().subtract(1, 'days');
                             var reminderDT = moment().add(7, 'days')
+                            // var reminderDT = moment().add(2, 'minutes')
                             // console.log(reminderDT)
 
                             messagebird.messages.create({
-                                originator : "Movie App",
+                                originator : "ScreenTime",
                                 recipients: [phoneNo],
                                 scheduledDatetime: reminderDT.format(),
-                                body: "Hey " + username + ", don't forget that " + title + " is out next week on the "
-                                + releaseDT.format('MMMM Do YYYY')
+                                body: "Hey " + username + ", don't forget that " + title + " is out next week "
+                                // + releaseDT.format('MMMM Do YYYY')
                             }, function (err, response) {
                                 if (err) {
                                     //request failed

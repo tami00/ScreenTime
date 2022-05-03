@@ -3,6 +3,7 @@ import Axios from "axios";
 import ReactPlayer from 'react-player'
 import authService from "../../services/auth.service";
 import authHeader from "../../services/auth-header";
+import {Button} from 'antd'
 
 function VideoPlayer(props) {
   const currentUser = authService.getCurrentUser();
@@ -18,11 +19,10 @@ function VideoPlayer(props) {
     setVideoUrl('http://localhost:8080/' + newFilePath);
   }, []);
 
-  const onClick = (e) =>{
+  const onClick = (e) => {
     e.preventDefault();
-
-    Axios.post(
-      "http://localhost:8080/api/portfolio/deleteVideo",{ data: currentUser.id },{ headers: authHeader() }
+    console.log(currentUser.id);
+    Axios.post("http://localhost:8080/api/portfolio/deleteVideo", { userFrom: currentUser.id }, { headers: authHeader() }
     ).then((response) => {
       if (response.data.success) {
         console.log("Removed from portfolio");
@@ -30,7 +30,7 @@ function VideoPlayer(props) {
         alert("Failed to remove");
       }
     });
-  }
+  };
 
   return (
     <div style = {{backgroundColor:'white'}}>
@@ -46,7 +46,7 @@ function VideoPlayer(props) {
       </div>
       <h3>{title}</h3>
       <p>{description}</p>
-      <button onClick={onClick}>DELETE</button> 
+      <Button onClick={onClick}>DELETE</Button> 
     </div>
     </div>
   )

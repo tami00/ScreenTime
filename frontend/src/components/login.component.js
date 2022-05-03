@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-import GoogleLogin from 'react-google-login'
+
 import AuthService from "../services/auth.service";
-import Axios from 'axios'
 
 const required = value => {
   if (!value) {
@@ -56,7 +55,7 @@ export default class Login extends Component {
     if (this.checkBtn.context._errors.length === 0) {
       AuthService.login(this.state.username, this.state.password).then(
         () => {
-          this.props.history.push("/profile");
+          this.props.history.push("/home");
           window.location.reload();
         },
         error => {
@@ -80,31 +79,15 @@ export default class Login extends Component {
     }
   }
 
-  handleLogin = (googleData) => {
-    console.log(googleData)
-    const tokenId = googleData.tokenId
-    console.log(tokenId)
-
-    Axios.post('http://localhost:8080/api/auth/googleLogin', {data: tokenId})
-    .then(response => {
-          console.log('GOOGLE LOGIN SUCCESS', response)
-          // this.setState({ userDetails: response.data.details })
-  })
-  }
-
-  handleFailure = (googleData) => {
-    alert(googleData)
-  }
-
   render() {
     return (
       <div className="col-md-12">
-        <div className="card card-container">
-          <img
-            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-            alt="profile-img"
-            className="profile-img-card"
-          />
+      <div className="card card-container">
+        <img
+          src="/logo.png"
+          alt="profile-img"
+          className="profile-img-card"
+        />
 
           <Form
             onSubmit={this.handleLogin}
@@ -112,13 +95,6 @@ export default class Login extends Component {
               this.form = c;
             }}
           >
-                      <GoogleLogin 
-            clientId={process.env.REACT_APP_CLIENT_KEY}
-            buttonText="Login with Google"
-            onSuccess={this.handleLogin}
-            onFailure={this.handleFailure}>
-          </GoogleLogin>
-
             <div className="form-group">
               <label htmlFor="username">Username</label>
               <Input

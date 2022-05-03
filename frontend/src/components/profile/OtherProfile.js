@@ -7,7 +7,7 @@ import AuthService from "../../services/auth.service";
 import Portfolio from "../portfolio/Portfolio"
 import FutureFilms from '../films/futureFilms';
 import FavouriteContainer from '../films/favouriteContainer';
-import { Avatar } from 'antd';
+import { Avatar, Button } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { withRouter } from "react-router";
 import Axios from "axios";
@@ -121,9 +121,19 @@ export default class OtherProfile extends Component {
         {(this.state.userReady) ?
           <div>
             <br></br>
-            <Avatar 
-              size={180} 
-              />
+            {userDetails.filePath ? (
+              <img
+                height={180}
+                width={180}
+                src={
+                  "http://localhost:8080/" +
+                  userDetails.filePath.split("\\").join("/")
+                }
+                style={{ borderRadius: "50%" }}
+              ></img>
+            ) : (
+              <Avatar size={180} icon={<UserOutlined />} />
+            )}
             <br></br>
               <br></br>
             <strong>Username: </strong>
@@ -132,8 +142,8 @@ export default class OtherProfile extends Component {
               <strong>Bio: </strong>
               {userDetails.bio}
             </p>
-            <button onClick={followUser}> Follow </button>
-            <button onClick={unfollowUser}> Unfollow </button>
+            <Button onClick={followUser}> Follow </Button>
+            <Button onClick={unfollowUser}> Unfollow </Button>
 
           </div> : null}
         <Menu>

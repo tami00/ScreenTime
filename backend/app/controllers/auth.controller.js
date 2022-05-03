@@ -97,6 +97,7 @@ exports.signin = (req, res) => {
         username: user.username,
         email: user.email,
         phoneNo: user.phoneNo,
+        filePath: user.filePath,
         // roles: authorities,
         accessToken: token
       });

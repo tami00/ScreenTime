@@ -131,22 +131,22 @@ module.exports = function (app) {
     )
   })
 
-  // app.post("/following", (req, res) => {
-  //   // const { id } = req.query;
-  //   // const userFrom = req.body.data
+  app.post("/api/following", (req, res) => {
+    // const { id } = req.query;
+    // const userFrom = req.body.data
 
-  //   User.find({id:req.body.id ,userFrom:req.body.userFrom
-  //   }).exec((err, following) => {
-  //     if (err) return res.status(400).send(err);
-  //     console.log(following.length);
-  //     let result = false;
-  //     if (following.length !== 0) {
-  //       result = true;
-  //     }
+    User.find({id:req.body.id ,userFrom:req.body.userFrom
+    }).exec((err, following) => {
+      if (err) return res.status(400).send(err);
+      console.log(following.length);
+      let result = false;
+      if (following.length !== 0) {
+        result = true;
+      }
 
-  //     res.status(200).json({ success: true, favourited: result });
-  //   });
-  // });
+      res.status(200).json({ success: true, following: result });
+    });
+  });
 
   app.put('/api/unfollow', (req, res) => {
     const { id } = req.query;
@@ -192,6 +192,17 @@ module.exports = function (app) {
     })
     
   })
+
+  app.post("/api/getFollowers", (req, res) => {
+    User.find({"data": req.body.data}) 
+    // console.log("ID ", req.body.data)
+    .populate('followers')
+    .exec((err, follow) => {
+        if(err) return res.status(400).send(err)
+        res.status(200).json({success: true, follow})
+    })
+    
+})
   
 };
 

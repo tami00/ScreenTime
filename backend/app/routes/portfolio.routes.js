@@ -56,10 +56,9 @@ router.post("/uploadVideo", (req, res) => {
 });
 
 router.post("/deleteVideo", (req, res) => {
-  Video.findById(req.body.data)
-  .exec((err, video) => {
-    if (err) return res.status(400).json({success: false. err})
-    return res.status(200).json({success: true, video});
+  Video.findOneAndDelete({ userFrom: req.body.userFrom }).exec((err, video) => {
+    if (err) return res.status(400).json({ success: false.err });
+    return res.status(200).json({ success: true, video });
   });
 });
 

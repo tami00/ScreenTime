@@ -9,18 +9,37 @@ import SentimentComponent from '../sentiment-analysis/sentiment.component';
 const { Title } = Typography;
 
 function Activity(props) {
+  const currentUser = authService.getCurrentUser();
   const [videoDetails, setVideoDetails] = useState([])
+  const [follow, setFollowers] = useState([])
   const [loading, setLoading] = useState(true);
 
   const id = props.userID;
 
+  useEffect(() => {
+    setTimeout(() => {
+      Axios.post("http://localhost:8080/api/getFollowers", {data: currentUser.id}, {
+        headers: authHeader(),
+      }).then((response) => {
+        if (response.data.success) {
+          // setFollowers(response.data.follow);
+          console.log(response.data);
+        } else {
+          alert("Failed to get info");
+        }
+      });
+    }, 200);
+  }, []);
+
+
+
     useEffect(() => {
-        Axios.post('http://localhost:8080/api/getFollowing', {data:id}, { headers: authHeader()})
+        Axios.post('http://localhost:8080/api/getFollowers', {data:id}, { headers: authHeader()})
               .then(response => {
                   if (response.data.success) {
-                      console.log('FOLLOWING VID',response.data.videos)
-                      setVideoDetails(response.data.videos)
-                      setTimeout(() => setLoading(false), 300);
+                      // console.log('FOLLOWING VID',response.data.videos)
+                      // setVideoDetails(response.data.videos)
+                      // setTimeout(() => setLoading(false), 300);
                   } else {
                       alert('Error')
                   }

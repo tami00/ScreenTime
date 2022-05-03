@@ -12,16 +12,11 @@ const ShowTimes = (props) => {
     // const currentUser = authService.getCurrentUser();
     const date =  moment(new Date()).format("YYYY-MM-DD")
     const [showTimesList, setShowTimesList] = useState([])
-    const [dataSource, setDataSource] = useState();
 
     const variables = {
         movieTitle: props.movieTitle,
         date: date
     }
-
-    const columns = [
-      { title: 'Cineworld Showtimes', dataIndex: 'address', key: '1' },
-    ];
 
     // const times = moment(showTimesList).format('DD-MM-YYYY HH:mm:ss')
 
@@ -42,12 +37,23 @@ const ShowTimes = (props) => {
         <div style={{ maxWidth: '100px', margin: '2rem auto' }}>
           {showTimesList.length === 0 ?
             <div style={{ display: 'flex', height: '300px', justifyContent: 'center', alignItems: 'center' }}>
-              <h1>There are no available showtimes at the moment</h1>
-            </div> :
-            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            </div>
-    
+              <p>There are no available showtimes at the moment</p>
+            </div> 
+            :
+            <div style={{ textAlign: "center", marginBottom: "2rem" }}>
+          <tr>
+            <th>{props.movieTitle}</th>
+            <th>Time</th>
+          </tr>
+          {showTimesList.map((element, index) => 
+            <tr key={index}>
+              <td>Show {index + 1}</td>
+              <td style={{paddingLeft : "5px"}}>{element}</td>
+            </tr>
+          )}
+        </div>
           }
+          
     
         </div>
     )

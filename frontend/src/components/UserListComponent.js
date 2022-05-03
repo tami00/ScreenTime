@@ -64,7 +64,7 @@ const UserListComponent = (props) => {
           </Link>
         ))}
       {!loading && userList.length === 0 && (
-        <div>No users exist with the paramters!</div>
+        <div>No users exist with that name!</div>
       )}
     </UserListContainer>
   );

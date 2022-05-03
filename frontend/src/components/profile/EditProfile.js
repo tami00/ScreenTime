@@ -32,15 +32,12 @@ function EditProfile() {
     }
 
     const uploadSuccess = () => {
-        message.success('Video uploaded succesfully');
+        message.success('User updated succesfully');
     };
 
-    const detailsError = () => {
-        message.error('Fill in all details');
-    };
 
     const uploadError = () => {
-        message.error('ERROR:There was an error uploading the video');
+        message.error('ERROR:There was an error updating the user');
     };
 
     const handleChangeUsername = (e) => {
@@ -79,7 +76,6 @@ function EditProfile() {
         // }
 
 
-        event.preventDefault()
 
         const variables = {
             userFrom: currentUser.id,
@@ -97,13 +93,13 @@ function EditProfile() {
             if (response.data.success) {
                 console.log("Updated");
                 localStorage.setItem("user", JSON.stringify(response.data));
-                // return uploadSuccess()
+                return uploadSuccess()
             } else {
                 console.log(response.error);
-                // return uploadError()
+                return uploadError()
             }
         });
-
+        window.location.reload()
     }
 
     const onDrop = (files) => {
@@ -171,9 +167,14 @@ function EditProfile() {
                 />
                 <br /><br />
                 <label>Phone Number</label>
-                <InputNumber
+                <Input
                     onChange={handleChangePhoneNo}
                     value={phoneNo}
+                    onKeyPress={(event) => {
+                        if (!/[0-9]/.test(event.key)) {
+                          event.preventDefault();
+                        }
+                      }}
                 />
                 <br /><br />
                 <label>Bio</label>

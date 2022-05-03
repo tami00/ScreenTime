@@ -86,9 +86,9 @@ const MovieInfoComponent = () => {
         <Container2>
         <Reviews refreshFunction={updateReview} reviewList={reviewList} movieId={movieInfo?.id} movieTitle={movieInfo?.title} />
         </Container2>
-        {/* <ShowTimesContainer> 
+        <ShowTimesContainer> 
           <ShowTimes movieTitle={movieInfo?.title}/> 
-        </ShowTimesContainer> */}
+        </ShowTimesContainer>
       </div>
     </Container>
   );

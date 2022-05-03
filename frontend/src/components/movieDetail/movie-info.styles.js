@@ -17,7 +17,7 @@ margin:auto;
   padding: 3px 8px;
   color: #fff;
   overflow-y: auto;
-  max-height: 250px;
+  max-height: 200px;
   width: 700px;
 `;
 
@@ -25,12 +25,11 @@ export const ShowTimesContainer = styled.div`
   position: absolute;
   z-index: 1;
   left: 0; right: 0; bottom: 0;
-  background: #808080;
   padding: 3px 8px;
-  border-top: 1px solid lightgray;
-  color: #fff;
+  /* color: #fff; */
   overflow-y: auto;
-  max-height: 50vh;
+  max-height: 200px;
+  width: 250px;
 `;
 
 
@@ -69,7 +68,7 @@ export const MovieInfo = styled.span`
   & span {
     opacity: 0.5;
   }
-  width:400px
+  width:450px
 `;
 
 export const Button = styled.button`

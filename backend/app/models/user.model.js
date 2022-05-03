@@ -17,10 +17,10 @@ const User = mongoose.model(
         ref: "User",
       },
     ],
-    followers: {
+    followers: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-    },
+    }],
   })
 );
 

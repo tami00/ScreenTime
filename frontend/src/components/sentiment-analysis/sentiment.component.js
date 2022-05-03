@@ -85,19 +85,19 @@ const SentimentComponent = (props) => {
                   <div className="emoji">
                     {review.sentimentScore ? review.sentimentScore === 0 ?
                       <img
-                        width={50}
-                        src="https://images.emojiterra.com/twitter/v13.1/512px/1f610.png"
+                        width={80}
+                        src="/neutral.png"
                         align="right"
                         alt="neutral" />
                       : review.sentimentScore > 0 ?
                         <img
-                          width={50}
-                          src="https://as1.ftcdn.net/v2/jpg/02/15/08/80/1000_F_215088044_Ow0pypSekAamu3jZJnkRtfAyKj6KVlKj.jpg"
+                          width={80}
+                          src="/happy.png"
                           align="right"
                           alt="positive" />
                         : <img
-                          width={50}
-                          src="https://www.pinclipart.com/picdir/middle/82-822786_cartoon-angry-emoji-pictures-to-pin-on-pinterest.png"
+                          width={80}
+                          src="/angry.png"
                           align="right"
                           alt="negative" />
                       : ''}
@@ -136,19 +136,19 @@ const SentimentComponent = (props) => {
                   <div className="emoji">
                     {review.sentimentScore ? review.sentimentScore === 0 ?
                       <img
-                        width={50}
-                        src="https://images.emojiterra.com/twitter/v13.1/512px/1f610.png"
+                        width={80}
+                        src="/neutral.png"
                         align="right"
                         alt="neutral" />
                       : review.sentimentScore > 0 ?
                         <img
-                          width={50}
-                          src="https://as1.ftcdn.net/v2/jpg/02/15/08/80/1000_F_215088044_Ow0pypSekAamu3jZJnkRtfAyKj6KVlKj.jpg"
+                          width={80}
+                          src="/happy.png"
                           align="right"
                           alt="positive" />
                         : <img
                           width={80}
-                          src="/angryemoji.jpg"
+                          src="/angry.png"
                           align="right"
                           alt="negative" />
                       : ''}

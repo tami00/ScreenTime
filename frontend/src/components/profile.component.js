@@ -7,7 +7,7 @@ import Films from "./films/films.component"
 import Portfolio from "../components/portfolio/Portfolio"
 import FutureFilms from '../components/films/futureFilms';
 import FavouriteContainer from '../components/films/favouriteContainer';
-import { Avatar } from 'antd';
+import { Avatar, Button } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import Activity from './activity/Activity'
 import ReccomendedMovies from './recommender/recommdender'
@@ -51,9 +51,9 @@ export default class Profile extends Component {
       case 'futurefilms':
         return <FutureFilms />;
         case 'activity':
-          return <Activity/>;
-          case 'recommendations':
-          return <ReccomendedMovies/>;
+          // return <Activity/>;
+          // case 'recommendations':
+          // return <ReccomendedMovies/>;
     }
   }
 
@@ -76,21 +76,27 @@ export default class Profile extends Component {
               <img
                 height={180}
                 width={180}
-                src={currentUser.filePath.split("\\").join("/")}
+                src={
+                  "http://localhost:8080/" +
+                  currentUser.filePath.split("\\").join("/")
+                }
+                style={{ borderRadius: "50%" }}
               ></img>
             ) : (
               <Avatar size={180} icon={<UserOutlined />} />
             )}
-
-
             <p>
               <strong>Email:</strong>{" "}
               {currentUser.email}
             </p>
+            <p>
+              <strong>Bio:</strong>{" "}
+              {currentUser.bio}
+            </p>
             <strong>Username: </strong>
             {currentUser.username}
             <p>
-              <button onClick={this.onClick}> EDIT </button>
+              <Button onClick={this.onClick}> EDIT </Button>
               {/* <strong>Phone Number: </strong>
               {currentUser.phoneNo} */}
             </p>
@@ -124,11 +130,11 @@ export default class Profile extends Component {
             active={activeItem === 'portfolio'}
             onClick={this.handleItemClick}
           />
-          <Menu.Item
+          {/* <Menu.Item
             name='activity'
             active={activeItem === 'activity'}
             onClick={this.handleItemClick}
-          />
+          /> */}
           <Menu.Item
             name='recommendations'
             active={activeItem === 'recommendations'}

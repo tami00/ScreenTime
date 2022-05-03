@@ -3,7 +3,7 @@ import React, {useState, useEffect } from "react";
 import {getPopularMovies, getUpcoming} from "../services/movieAPI.service";
 
 //styles
-import Carousel from "react-elastic-carousel"
+import { Carousel } from 'antd';
 //components
 import HeroImage from "./heroImage";
 import Rows from "./rows";

@@ -5,7 +5,7 @@ import FavouriteCard from "./favouriteCard";
 import Axios from "axios";
 import authService from '../../services/auth.service'
 import authHeader from '../../services/auth-header';
-import { Col, Row  } from 'antd'
+import { Col, Row, Button  } from 'antd'
 
 
 const FavouriteContainer = (props) => {
@@ -94,9 +94,11 @@ const FavouriteContainer = (props) => {
                 <Row gutter={[16, 16]}>
                 {otherUserDisplayCards} 
                 </Row>
-                <button onClick={handleChange}>Load</button>
-                </div>
-                )
+                {visible > 3 ?
+         <Button onClick={handleChange}>Load</Button>
+        : ''}
+              </div>
+          )
             }
         }else if (url.indexOf('profile') > 1) {
             if (!loading && favouriteList.length === 0){
@@ -111,7 +113,9 @@ const FavouriteContainer = (props) => {
                     <Row gutter={[16, 16]}>
                     {displayCards} 
                     </Row>
-                    <button onClick={handleChange}>Load</button>
+                    {visible > 3 ?
+         <Button align='centre' onClick={handleChange}>Load</Button>
+        : ''}
                     </div>
                 )
             }

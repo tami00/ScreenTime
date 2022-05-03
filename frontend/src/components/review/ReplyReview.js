@@ -24,7 +24,7 @@ function ReplyReview(props) {
     <div>
       <p style={{ fontSize: '14px', margin: 0, color: 'black' }} onClick>
         {' '}
-        View replies
+        {/* View replies */}
       </p>
       {loadReply(props.parentReviewId)}
     </div>
