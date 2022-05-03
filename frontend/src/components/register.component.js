@@ -3,8 +3,11 @@ import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
 import { isEmail } from "validator";
+import GoogleLogin from 'react-google-login'
+import authHeader from  '../services/auth-header'
 
 import AuthService from "../services/auth.service";
+import Axios from "axios";
 
 const required = value => {
   if (!value) {
@@ -36,6 +39,25 @@ const vusername = value => {
   }
 };
 
+const vphoneNo = value => {
+  // if (value.length < 10 || value.length > 10) {
+  //   return (
+  //     <div className="alert alert-danger" role="alert">
+  //       Please enter a valid phone number
+  //     </div>
+  //   );
+  // }
+
+  // if (!value.startsWith('08')) {
+  //   return (
+  //     <div className="alert alert-danger" role="alert">
+  //       Please enter an Irish phone number
+  //     </div>
+  //   );
+  //}
+
+};
+
 const vpassword = value => {
   if (value.length < 6 || value.length > 40) {
     return (
@@ -53,11 +75,13 @@ export default class Register extends Component {
     this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeEmail = this.onChangeEmail.bind(this);
     this.onChangePassword = this.onChangePassword.bind(this);
+    this.onChangePhoneNo = this.onChangePhoneNo.bind(this);
 
     this.state = {
       username: "",
       email: "",
       password: "",
+      phoneNo: "",
       successful: false,
       message: ""
     };
@@ -72,6 +96,12 @@ export default class Register extends Component {
   onChangeEmail(e) {
     this.setState({
       email: e.target.value
+    });
+  }
+
+  onChangePhoneNo(e) {
+    this.setState({
+      phoneNo: e.target.value
     });
   }
 
@@ -95,7 +125,8 @@ export default class Register extends Component {
       AuthService.register(
         this.state.username,
         this.state.email,
-        this.state.password
+        this.state.password,
+        this.state.phoneNo
       ).then(
         response => {
           this.setState({
@@ -121,11 +152,13 @@ export default class Register extends Component {
   }
 
   render() {
+  
+    // console.log('ENV',process.env.REACT_APP_CLIENT_KEY)
     return (
       <div className="col-md-12">
         <div className="card card-container">
           <img
-            src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+            src="/logo.png"
             alt="profile-img"
             className="profile-img-card"
           />
@@ -159,6 +192,23 @@ export default class Register extends Component {
                     value={this.state.email}
                     onChange={this.onChangeEmail}
                     validations={[required, email]}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="phoneNo">Mobile Number</label>
+                  <Input
+                    type="tel"
+                    className="form-control"
+                    name="phoneNo"
+                    value={this.state.phoneNo}
+                    onChange={this.onChangePhoneNo}
+                    validations={[required, vphoneNo]}
+                    onKeyPress={(event) => {
+                      if (!/[0-9]/.test(event.key)) {
+                        event.preventDefault();
+                      }
+                    }}
                   />
                 </div>
 

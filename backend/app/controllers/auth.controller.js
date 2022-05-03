@@ -1,7 +1,10 @@
 const config = require("../config/auth.config");
 const db = require("../models");
 const User = db.user;
-const Role = db.role;
+const nodemailer = require("nodemailer")
+const {OAuth2Client} = require('google-auth-library')
+
+const client = new OAuth2Client("26894466814-75rfpg5m24l94rdqal8qq6ipo29hb9qk.apps.googleusercontent.com")
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -10,7 +13,8 @@ exports.signup = (req, res) => {
   const user = new User({
     username: req.body.username,
     email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 8)
+    password: bcrypt.hashSync(req.body.password, 8),
+    phoneNo: req.body.phoneNo
   });
 
   user.save((err, user) => {
@@ -19,46 +23,36 @@ exports.signup = (req, res) => {
       return;
     }
 
-    if (req.body.roles) {
-      Role.find(
-        {
-          name: { $in: req.body.roles }
-        },
-        (err, roles) => {
-          if (err) {
-            res.status(500).send({ message: err });
-            return;
-          }
+    res.send({ message: "User was registered successfully!" });
 
-          user.roles = roles.map(role => role._id);
-          user.save(err => {
-            if (err) {
-              res.status(500).send({ message: err });
-              return;
-            }
+    let transporter = nodemailer.createTransport({
+      host: "smtp-mail.outlook.com",
+      port: 587,
+      secure: false, 
+      auth: {
+        user: "screentimeIE@outlook.com", 
+        pass: "1234567FYP!", 
+      },
+      tls: {
+        // do not fail on invalid certs
+        rejectUnauthorized: false
+    },
+    });
 
-            res.send({ message: "User was registered successfully!" });
-          });
-        }
-      );
-    } else {
-      Role.findOne({ name: "user" }, (err, role) => {
-        if (err) {
-          res.status(500).send({ message: err });
-          return;
-        }
+    var mailOptions = {
+      from: "screentimeIE@outlook.com",
+      to: user.email,
+      subject: 'Registration',
+      text: 'Welcome to ScreenTime, a website for film lovers, creators and all those inbetween. Find new art and inspiration by following users or feel free to share your own short films for others to see.'
+    };
 
-        user.roles = [role._id];
-        user.save(err => {
-          if (err) {
-            res.status(500).send({ message: err });
-            return;
-          }
+    transporter.sendMail(mailOptions, function(error, info){
+      if(error){
+          return console.log(error);
+      }
+      console.log('Message sent: ' + info.response);
+  });
 
-          res.send({ message: "User was registered successfully!" });
-        });
-      });
-    }
   });
 };
 
@@ -93,17 +87,107 @@ exports.signin = (req, res) => {
         expiresIn: 86400 // 24 hours
       });
 
-      var authorities = [];
+      // var authorities = [];
 
-      for (let i = 0; i < user.roles.length; i++) {
-        authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
-      }
+      // for (let i = 0; i < user.roles.length; i++) {
+      //   authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
+      // }
       res.status(200).send({
         id: user._id,
         username: user.username,
         email: user.email,
-        roles: authorities,
+        phoneNo: user.phoneNo,
+        filePath: user.filePath,
+        // roles: authorities,
         accessToken: token
       });
     });
 };
+
+exports.update = async (req, res) => {
+  const user = await User.findById(req.body.userFrom);
+  console.log(user);
+  console.log(req.body.userFrom);
+  if (user) {
+    user.username = req.body.username || user.username;
+    user.email = req.body.email || user.email;
+    user.phoneNo = req.body.phoneNo || user.phoneNo;
+    user.bio = req.body.bio || user.bio;
+    user.filePath = req.body.filePath || user.filePath;
+
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
+
+    const updatedUser = user.save();
+
+    var token = jwt.sign({ id: user.id }, config.secret, {
+      expiresIn: 86400, // 24 hours
+    });
+
+    res.json({
+      id: user._id,
+      username: user.username,
+      email: user.email,
+      phoneNo: user.phoneNo,
+      bio: user.bio,
+      filePath: user.filePath,
+      accessToken: token,
+      success: true,
+    });
+  } else {
+    res.status(404).send({ message: 'User Not found.' });
+  }
+};
+
+exports.googlelogin = (req, res) => {
+  const tokenId = req.body.data;
+  // console.log(tokenId)
+  client.verifyIdToken({idToken: tokenId, audience: "26894466814-75rfpg5m24l94rdqal8qq6ipo29hb9qk.apps.googleusercontent.com"})
+  .then(response => {
+    const {email_verified, name,email} = response.payload
+    console.log(response.payload)
+    if(email_verified){
+      User.findOne({email}).exec((err,user) =>{
+        if(err) {
+          return res.status(404).send({ message: 'Something went wrong' });
+        } else{
+          if(user) {
+            var token = jwt.sign({ id: user.id }, config.secret, {
+              expiresIn: 86400, // 24 hours
+              
+            });
+
+            res.json({
+              token,
+              id: user._id
+            })
+        
+          } else {
+            let password =email+token
+             let newUser = new User({name, email, password});
+
+             newUser.save((err, data) => {
+               if(err) {
+                return res.status(404).send({ message: 'Something went wrong' });
+               }
+             })
+             var token = jwt.sign({ id: data.id }, config.secret, {
+              expiresIn: 86400, // 24 hours
+              
+            });
+
+            res.json({
+              token,
+              id: newUser._id
+            })
+
+
+
+          }
+        }
+      })
+    }
+
+  })
+}

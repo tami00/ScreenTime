@@ -3,21 +3,24 @@ import React, {useState, useEffect } from "react";
 import {getPopularMovies, getUpcoming} from "../services/movieAPI.service";
 
 //styles
-import Carousel from "react-elastic-carousel"
+import { Carousel } from 'antd';
 //components
 import HeroImage from "./heroImage";
 import Rows from "./rows";
 import Poster from "./poster";
+import { useHistory } from "react-router-dom";// services
 
 const HomeComponent = () => {
   const [popularMovieInfo, setPopularMovieInfo] = useState();
   const [upMovieInfo, setUpMovieInfo] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect( ()=>{
    
     (async ()=>{
       const response = await getPopularMovies()
       setPopularMovieInfo(response)
+      setTimeout(() => setLoading(false), 300);
     })();
     
   },[])
@@ -27,6 +30,7 @@ const HomeComponent = () => {
     (async ()=>{
       const response = await getUpcoming()
       setUpMovieInfo(response)
+      setTimeout(() => setLoading(false), 300);
     })();
     
   },[])
@@ -35,14 +39,15 @@ const HomeComponent = () => {
   console.log(firstMovie)
 
   return (
-    <>
-      {firstMovie ?
+    <> {loading && <div>Loading...</div>}
+      {!loading && firstMovie ?
         <HeroImage
           image={`https://image.tmdb.org/t/p/original/${firstMovie.backdrop_path}`}
           title= {firstMovie.title}/> 
       : null
       }
 
+      {!loading ? 
       <Rows header = 'Popular'>
         {popularMovieInfo?.results.map(popularMovieInfo => (
           <Poster
@@ -52,12 +57,15 @@ const HomeComponent = () => {
               : 'No image'
             }
             movieId={popularMovieInfo.id}
+            movieTitle={popularMovieInfo.title}
             />
         ))}
       </Rows>
+      : <div>Loading</div>}
 
+{!loading ? 
       <Rows header = 'Upcoming'>
-        {upMovieInfo?.results.map(upMovieInfo => (
+        {!loading && upMovieInfo?.results.map(upMovieInfo => (
           <Poster
             key={upMovieInfo.id}
             image={upMovieInfo.poster_path
@@ -68,6 +76,7 @@ const HomeComponent = () => {
             />
         ))}
       </Rows>
+      : <div>Loading</div>}
       </>
   );
 };

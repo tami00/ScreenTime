@@ -12,9 +12,13 @@ import Home from "./components/home.component";
 import Login from "./components/login.component";
 import MovieListComponent from "./components/movieDetail/movie-list.component";
 import Profile from "./components/profile.component";
+import EditProfile from "./components/profile/EditProfile";
 import Register from "./components/register.component";
+import UpdatePortfolio from "./components/portfolio/uploadPortfolio"
 import AuthService from "./services/auth.service";
 import MovieInfoComponent from "./components/movieDetail/movie-info.component";
+import UserListComponent from "./components/UserListComponent"
+import MemberUser from "./components/member-user.component";
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState(undefined);
@@ -47,7 +51,7 @@ const App = () => {
     <div>
       <nav className="navbar navbar-expand navbar-dark bg-dark">
         <Link to={"/"} className="navbar-brand">
-          Movie App
+          ScreenTime
         </Link>
         <div className="navbar-nav mr-auto">
           <li className="nav-item">
@@ -56,20 +60,20 @@ const App = () => {
             </Link>
           </li>
 
-            {/* might replace for creator stuff -- discover/start campaign */}
           {currentUser && (
             <li className="nav-item">
-              <Link to={"/user"} className="nav-link">
-                User
+              <Link to={"/portfolio"} className="nav-link">
+                Portfolio
               </Link>
             </li>
           )}
         </div>
 
+
         {/* passing a callback function to the Search component which will return
         the result returned from the api. Keeping the movie list state in app.js to map the movies here */}
 
-        {locationState=='/register'||locationState=='/login'?null:<Search/>}
+        {locationState == '/register' || locationState == '/login' ? null : <Search />}
 
 
         {currentUser ? (
@@ -108,9 +112,13 @@ const App = () => {
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/profile" component={Profile} />
-          <Route exact path="/films/:title/:id" children={<MovieInfoComponent/>}/>
-          <Route exact path="/films/:title" children={<MovieListComponent/>}/>
-          <Route path="/user" component={BoardUser} />
+          <Route exact path="/profile/edit" component={EditProfile} />
+          <Route exact path="/films/:title/:id" children={<MovieInfoComponent />} />
+          <Route exact path="/films/:title" children={<MovieListComponent />} />
+          <Route exact path="/users/:username"children={<UserListComponent />}/>
+          <Route exact path="/user" component={BoardUser} />
+          <Route exact path="/user/:id" component={MemberUser} />
+          <Route path="/portfolio" component={UpdatePortfolio} />
         </Switch>
       </div>
       {/* {selectedMovie && <MovieInfoComponent selectedMovie={selectedMovie} />} */}

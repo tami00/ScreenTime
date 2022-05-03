@@ -14,10 +14,18 @@ module.exports = function(app) {
     "/api/auth/signup",
     [
       verifySignUp.checkDuplicateUsernameOrEmail,
-      verifySignUp.checkRolesExisted
+      // verifySignUp.checkRolesExisted
     ],
     controller.signup
   );
 
+  app.post(
+    "/api/auth/update",
+    [verifySignUp.checkDuplicateUsernameOrEmail],
+    controller.update
+  );
+
   app.post("/api/auth/signin", controller.signin);
+
+  app.post('/api/auth/googleLogin', controller.googlelogin);
 };

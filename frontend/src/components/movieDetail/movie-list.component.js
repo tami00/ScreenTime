@@ -18,14 +18,18 @@ const MovieListContainer = styled.div`
 const MovieListComponent = (props) => {
 
   const [movieList,setMovieList] = useState([])
+  const [loading, setLoading] = useState(true);
   const {title} = useParams()
   const history = useHistory();
+  
+  
 
   useEffect( ()=>{
    
     (async ()=>{
       const response = await searchMovie(title)
       setMovieList(response?.results)
+      setTimeout(() => setLoading(false), 300);
     })();
     
   },[])
@@ -34,6 +38,7 @@ const MovieListComponent = (props) => {
       //history.push(`/films/${props.movieList.movie.id}`)
 
     }}>
+       {loading && <div>Loading...</div>}
       {/* {console.log(movieList)} */}
       {movieList && movieList.length > 0
           ? movieList.map((movie, index) => <MovieItem key={index} movie={movie}/>)

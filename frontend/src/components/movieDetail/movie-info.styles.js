@@ -10,15 +10,28 @@ export const Container = styled.div`
 `;
 
 export const Container2 = styled.div`
+margin:auto;
   position: absolute;
-  botton: 0;
   z-index: 1;
   left: 0; right: 0; bottom: 0;
-  background: #808080;
   padding: 3px 8px;
-  border-top: 1px solid lightgray;
   color: #fff;
+  overflow-y: auto;
+  max-height: 200px;
+  width: 700px;
 `;
+
+export const ShowTimesContainer = styled.div`
+  position: absolute;
+  z-index: 1;
+  left: 0; right: 0; bottom: 0;
+  padding: 3px 8px;
+  /* color: #fff; */
+  overflow-y: auto;
+  max-height: 200px;
+  width: 250px;
+`;
+
 
 export const PosterImg = styled.img`
   object-fit: cover;
@@ -51,11 +64,11 @@ export const MovieInfo = styled.span`
   color: black;
   overflow: hidden;
   margin: 4px 0;
-  text-transform: capitalize;
   text-overflow: ellipsis;
   & span {
     opacity: 0.5;
   }
+  width:450px
 `;
 
 export const Button = styled.button`

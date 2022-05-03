@@ -5,13 +5,22 @@ const User = mongoose.model(
   new mongoose.Schema({
     username: String,
     email: String,
-    password: String,
-    roles: [
+    password:{ 
+      type: String,
+      require: true},
+    phoneNo: String,
+    bio: String,
+    filePath: String,
+    following: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Role"
-      }
-    ]
+        ref: "User",
+      },
+    ],
+    followers: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    }],
   })
 );
 
